@@ -5,115 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="css/income_transaction.css">
     <title>Income Transaction</title>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-    <script type="text/javascript">
-        google.charts.load("current", {packages: ["corechart"]});
-
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            var data = new google.visualization.DataTable();
-            data.addColumn("string", "Category");
-            data.addColumn("number", "Amount");
-            <c:forEach items="${pieChartData}" var="item">
-                data.addRow(['${item.name}', ${item.amount}]);
-            </c:forEach>
-
-            var options = {
-                title: "Income of this month",
-                titleTextStyle: {
-                    color: 'white',
-                    bold: false
-                },
-                width: 600,
-                height: 400,
-                backgroundColor: "#333"
-            };
-            var chart = new google.visualization.PieChart(
-                document.getElementById("income-by-group")
-            );
-            chart.draw(data, options);
-        }
-    </script>
-    <script type="text/javascript">
-        google.charts.load("current", {packages: ["line"]});
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            var data = new google.visualization.DataTable();
-            data.addColumn("number", "Day");
-            data.addColumn("number", "Amount");
-            <c:forEach var="income" items="${incomeByDay}">
-                data.addRows([[${income.day}, ${income.amount}]]);
-            </c:forEach>
-            var options = {
-                chart: {
-                    title: "Income by day",
-                    subtitle: "in millions of dollars (USD)",
-                },
-                titleTextStyle: {
-                    color: 'white',
-                    bold: false
-                },
-                width: 600,
-                height: 400,
-                backgroundColor: "#333"
-            };
-
-            var chart = new google.charts.Line(
-                document.getElementById("income-by-day")
-            );
-
-            chart.draw(data, google.charts.Line.convertOptions(options));
-        }
-    </script>
-    <script type="text/javascript">
-        google.charts.load("current", {packages: ["corechart"]});
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            var data = new google.visualization.DataTable();
-            data.addColumn("string", "Category");
-            data.addColumn("number", "Amount");
-            data.addColumn({role: "style"});
-            <c:forEach var="income" items="${topFiveCategory}">
-                data.addRow(['${income.name}', ${income.amount}, 'blue']);
-            </c:forEach>
-
-            var view = new google.visualization.DataView(data);
-            view.setColumns([
-                0,
-                1,
-                {
-                    calc: "stringify",
-                    sourceColumn: 1,
-                    type: "string",
-                    role: "annotation",
-                },
-                2,
-            ]);
-
-            var options = {
-                title: "Income top five category",
-                titleTextStyle: {
-                    color: 'white',
-                    bold: false
-                },
-                width: 600,
-                height: 400,
-                bar: {groupWidth: "95%"},
-                legend: {position: "none"},
-                backgroundColor: "#333",
-            };
-            var chart = new google.visualization.BarChart(
-                document.getElementById("top-income-categories")
-            );
-            chart.draw(view, options);
-        }
-    </script>
 </head>
 <body>
+
 <div class="container">
     <a href="dashboard">
         <button>&#x2190; Dashboard</button>
@@ -122,33 +16,39 @@
         <form action="../../Backend/Controller/IncomeController.php" method="post">
             <h2>Add Income</h2>
             <input
-                required
-                type="number"
-                name="amount"
-                placeholder="Enter amount"
+                    required
+                    type="number"
+                    name="amount"
+                    placeholder="Enter amount"
             />
             <select name="category-id" id="category-id">
                 <option value="" selected>Select the Category</option>
+                <!---->
+                <!--                --><?php
+                //                    foreach ($income_category as $category) {
+                //                        echo "<option value='{$category['id']}'>{$category['name']}</option>";
+                //                    }
+                //                ?>
             </select>
             <input
-                required
-                type="text"
-                name="remarks"
-                placeholder="Enter remarks"
+                    required
+                    type="text"
+                    name="remarks"
+                    placeholder="Enter remarks"
             />
             <button type="submit" name="submit" value="add-income">
                 Add income
             </button>
         </form>
 
-        <form action="income" method="post">
+        <form action="../../Backend/Controller/IncomeController.php" method="post">
             <h2>Add New Category</h2>
             <input
-                type="text"
-                name="categoryName"
-                placeholder="Enter New category"
+                    type="text"
+                    name="category-name"
+                    placeholder="Enter New category"
             />
-            <button type="submit" name="submit" value="addCategory">
+            <button type="submit" name="submit" value="add-category">
                 Add Category
             </button>
         </form>
@@ -188,7 +88,6 @@
             <td>Time</td>
             <th>Action</th>
         </tr>
-        <c:forEach var="income" items="${transactions}">
             <tr>
                 <form action="income" method="post">
                     <td>
@@ -200,12 +99,6 @@
                         <span id="defaultCategory-${income.transactionId}">${income.category}</span>
                         <select name="categoryId" id="categoryId-${income.transactionId}" required hidden="hidden">
                             <option selected value="${income.categoryId}">${income.category}</option>
-                            <c:forEach var="category" items="${categoryNames}">
-                                <option value="${category.categoryId}">
-                                    ${category.categoryName}
-                                </option>
-                                `
-                            </c:forEach>
                         </select>
 
                     </td>
@@ -235,11 +128,8 @@
                     </td>
                 </form>
             </tr>
-        </c:forEach>
     </table>
 
 </div>
 </body>
 </html>
-<script src="js/editButton.js">
-</script>

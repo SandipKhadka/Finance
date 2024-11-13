@@ -11,7 +11,12 @@
 <body>
 <form action="../../Backend/Controller/UserController.php" method="post">
     <label for="first-name">First Name:</label>
-    <input type="text" id="first-name" name="firstName" placeholder="Enter your first name" required/>
+    <input type="text"
+           id="first-name"
+           name="firstName"
+           placeholder="Enter your first name"
+           value="<?php echo isset($_POST['firstName'])? $_POST['firstName']: ''; ?>"
+           required/>
 
     <label for="last-name">Last Name:</label>
     <input type="text" id="last-name" name="lastName" placeholder="Enter your last name" required/>
@@ -19,7 +24,11 @@
     <label for="username">Username:</label>
     <input type="text" id="username" name="userName" placeholder="Choose a username" required/>
     <div class="error">
-        <span>>${userNameError}</span>
+        <?php
+        if (isset($_GET['error'])) {
+            echo "<span>" . $_GET['error'] . "</span>";
+        }
+        ?>
     </div>
 
     <label for="password">Password:</label>
