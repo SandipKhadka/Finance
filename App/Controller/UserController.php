@@ -1,4 +1,5 @@
 <?php
+
 include_once "../Database/UserDB.php";
 
 class userController
@@ -13,12 +14,14 @@ class userController
 
         $user = new UserDB();
         if (!$user->is_username_available($user_name)) {
-            header("location: ../../Frontend/Markup/register.php?error=" .
+            header("location: ../../Public/Markup/register.php?error=" .
                 urlencode("the username is already taken"));
             exit();
         }
         if ($user->register_user($first_name, $last_name, $user_name, $hashed_password)) {
-            echo "sucess";
+            session_start();
+            $_SESSION['username'] = $user_name;
+            header('Location: ../../Public/Markup/dashboard.php');
         } else {
             echo "error";
         }
@@ -31,15 +34,18 @@ class userController
         $hashed_password = hash('sha256', $password);
         $user = new UserDB();
         if ($user->is_username_available($user_name)) {
-            echo "username doesnot exist";
+            header("Location: ../../index.php?username-error=".
+            urlencode("The username is not available"));
             exit();
         }
         if ($user->login_user($user_name, $hashed_password)) {
             session_start();
             $_SESSION["userName"] = $user_name;
-            header('Location: ../../Frontend/Markup/dashboard.php');
-
+            header('Location: ../../Public/Markup/dashboard.php');
+            exit();
         }
+        header("Location: ../../index.php?password-error=".
+            urlencode("The password is not correct"));
     }
 }
 
@@ -54,3 +60,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     $user->register_user();
     exit();
 }
+

@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<form action="../../Backend/Controller/UserController.php" method="post">
+<form action="../../App/Controller/UserController.php" method="post">
     <label for="first-name">First Name:</label>
     <input type="text"
            id="first-name"

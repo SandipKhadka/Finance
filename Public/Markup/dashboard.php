@@ -115,10 +115,10 @@
         </div>
     </div>
 
-    <a href="../Markup/income_transaction.php">
+    <a href="income_transaction.php">
         <button>Income Transaction</button>
     </a>
-    <a href="../Markup/income_transaction.php">
+    <a href="ansaction.php">
         <button>Expenses Transaction</button>
     </a>
     <a href="spendlimit">
