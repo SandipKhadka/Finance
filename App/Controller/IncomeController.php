@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/../Database/IncomeDB.php';
 
-// Start session only once at the beginning
 session_start();
 
 class IncomeController

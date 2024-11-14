@@ -18,7 +18,6 @@ class IncomeDB
             "VALUES(?,?,?,?,CURDATE(),CURTIME())";
         $user_id = $this->get_user_id($user_name);
 
-
         $statement = mysqli_stmt_init($this->connection);
         if (mysqli_stmt_prepare($statement, $sql)) {
             mysqli_stmt_bind_param($statement, "iiis", $amount, $category_id, $user_id, $remarks);
@@ -40,6 +39,28 @@ class IncomeDB
             }
         }
         return null;
+    }
+
+    public function get_income_amount($user_name)
+    {
+        $user_id = $this->get_user_id($user_name);
+        $sql = "SELECT " .
+            "SUM(income_amount) " .
+            "FROM income " .
+            " WHERE user_id=? AND YEAR(date) =? AND MONTH(date) =?";
+        $income = 0;
+
+        $date = date("Y-m");
+        list($year, $month) = explode('-', $date);
+        $statement = mysqli_stmt_init($this->connection);
+        if (mysqli_stmt_prepare($statement, $sql)) {
+            mysqli_stmt_bind_param($statement, "iii", $user_id, $year, $month);
+            mysqli_stmt_execute($statement);
+            $result = mysqli_stmt_get_result($statement);
+            $row = mysqli_fetch_assoc($result);
+            $income = $row["SUM(income_amount)"];
+        }
+        return $income;
     }
 
     public function add_income_category($category_name, $user_name)

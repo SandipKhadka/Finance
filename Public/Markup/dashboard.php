@@ -1,3 +1,16 @@
+<?php
+require_once __DIR__ . '/../../App/Controller/DashboardController.php';
+$dashboard_controller = new DashboardController();
+session_start();
+
+$income =0;
+
+if(isset($_SESSION['income'])) {
+    $income = $_SESSION['income'];
+    unset($_SESSION['income']);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -103,7 +116,7 @@
     <div class="summary">
         <div class="summary-item">
             <div class="summary-title">Income</div>
-            <div class="summary-value">Rs . ${income}</div>
+            <div class="summary-value">Rs . <?php echo $income ?></div>
         </div>
         <div class="summary-item">
             <div class="summary-title">Expenses</div>
