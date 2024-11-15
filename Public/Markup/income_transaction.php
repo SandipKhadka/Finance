@@ -16,7 +16,7 @@ if (isset($_SESSION['piechart_data'])) {
     $piechart_data = $_SESSION['piechart_data'];
     unset($_SESSION['piechart_data']);
 } else {
-    $piechart_data = $incomeController->get_piechart_data(null, null);
+    $piechart_data = $incomeController->get_pie_chart_data(null, null);
 }
 
 $linegraph_data = [];
@@ -24,7 +24,7 @@ if (isset($_SESSION['linegraph_data'])) {
     $linegraph_data = $_SESSION['linegraph_data'];
     unset($_SESSION['linegraph_data']);
 } else {
-    $linegraph_data = $incomeController->get_linechart_data(null, null);
+    $linegraph_data = $incomeController->get_line_chart(null, null);
 }
 
 $bargraph_data =[];
@@ -32,7 +32,7 @@ if(isset($_SESSION['bargraph_data'])){
     $bargraph_data = $_SESSION['bargraph_data'];
     unset($_SESSION['bargraph_data']);
 } else {
-    $bargraph_data = $incomeController->get_bargraph_data(null, null);
+    $bargraph_data = $incomeController->get_bar_graph_data(null, null);
 }
 
 print_r($bargraph_data);

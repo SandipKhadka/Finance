@@ -1,14 +1,40 @@
 <?php
 require_once __DIR__ . '/../../App/Controller/DashboardController.php';
 $dashboard_controller = new DashboardController();
-session_start();
 
-$income =0;
+$income = 0;
 
-if(isset($_SESSION['income'])) {
+if (isset($_SESSION['income'])) {
     $income = $_SESSION['income'];
     unset($_SESSION['income']);
 }
+
+if (isset($_SESSION['expenses'])) {
+    $expenses = $_SESSION['expenses'];
+    unset($_SESSION['expenses']);
+}
+
+$piechart_data = [];
+if (isset($_SESSION['piechart_data'])) {
+    $piechart_data = $_SESSION['piechart_data'];
+    unset($_SESSION['piechart_data']);
+}
+
+
+$linegraph_data = [];
+if (isset($_SESSION['linegraph_data'])) {
+    $linegraph_data = $_SESSION['linegraph_data'];
+    unset($_SESSION['linegraph_data']);
+}
+
+$bargraph_data = [];
+if (isset($_SESSION['bargraph_data'])) {
+    $bargraph_data = $_SESSION['bargraph_data'];
+    unset($_SESSION['bargraph_data']);
+}
+
+$net_income = $income - $expenses;
+$dashboard_controller->close_db_connection();
 ?>
 
 <!DOCTYPE html>
@@ -23,90 +49,114 @@ if(isset($_SESSION['income'])) {
 
 
     <script type="text/javascript">
-        google.charts.load('current', {'packages': ['corechart']});
+        google.charts.load("current", {packages: ["corechart"]});
 
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
-
             var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Category');
-            data.addColumn('number', 'Amount');
-            <c:forEach items="${pieChartData}" var="item">
-                data.addRow(['${item.name}', ${item.amount}]);
-            </c:forEach>
+            data.addColumn("string", "Category");
+            data.addColumn("number", "Amount");
+
+            <?php
+            if (!empty($piechart_data)) {
+                foreach ($piechart_data as $pie) {
+                    echo "data.addRow(['" . addslashes($pie['category_name']) . "', " . $pie['SUM(expenses.expenses_amount)'] . "]);\n";
+                }
+            } else {
+                echo "console.log('No piechart data available');\n";  // Add debug if no data
+            }
+            ?>
 
             var options = {
-                'title': 'Expenses of this month',
-                'width': 400,
-                'height': 300
+                title: "expenses of this month",
+                titleTextStyle: {
+                    color: 'white',
+                    bold: false
+                },
+                width: 600,
+                height: 400,
+                backgroundColor: "#333"
             };
-            var chart = new google.visualization.PieChart(document.getElementById('expenses-by-group'));
-            chart.draw(data, options);
+
+            var chart = new google.visualization.PieChart(document.getElementById("expenses-by-group"));
+
+            if (data.getNumberOfRows() > 0) {
+                chart.draw(data, options);
+            } else {
+                console.log('Pie chart data is empty or invalid');
+            }
         }
     </script>
+
     <script type="text/javascript">
-        google.charts.load('current', {'packages': ['line']});
+        google.charts.load("current", {packages: ["line"]});
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
-
             var data = new google.visualization.DataTable();
-            data.addColumn('number', 'Day');
-            data.addColumn('number', 'Amount');
-            <c:forEach var="expenses" items="${expensesByDay}">
-                data.addRows([
-                [${expenses.day}, ${expenses.amount}]
-                ]);
-            </c:forEach>
+            data.addColumn("number", "Day");
+            data.addColumn("number", "Amount");
+            <?php
+            foreach ($linegraph_data as $line) {
+                echo "data.addRows([[" . addslashes($line['DAY(date)']) . ", " . $line['SUM(expenses.expenses_amount)'] . "]]);\n";
+            }
+            ?>
             var options = {
                 chart: {
-                    title: 'Expenses by day',
-                    subtitle: 'in millions of dollars (USD)'
+                    title: "expenses by day",
+                    subtitle: "in millions of dollars (USD)",
                 },
-                width: 400,
-                height: 300
+                titleTextStyle: {
+                    color: 'white',
+                    bold: false
+                },
+                width: 600,
+                height: 400,
+                backgroundColor: "#333"
             };
 
-            var chart = new google.charts.Line(document.getElementById('expenses-by-day'));
+            var chart = new google.charts.Line(
+                document.getElementById("expenses-by-day")
+            );
 
             chart.draw(data, google.charts.Line.convertOptions(options));
         }
     </script>
+
     <script type="text/javascript">
         google.charts.load("current", {packages: ["corechart"]});
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Category');
-            data.addColumn('number', 'Amount');
-            data.addColumn({role: "style"});
-            <c:forEach var="expenses" items="${topFiveCategory}">
-                data.addRow(['${expenses.name}', ${expenses.amount}, 'blue']);
-            </c:forEach>
-
-            var view = new google.visualization.DataView(data);
-            view.setColumns([0, 1,
-                {
-                    calc: "stringify",
-                    sourceColumn: 1,
-                    type: "string",
-                    role: "annotation"
-                },
-                2]);
+            // Start with a static header row for the chart
+            var data = google.visualization.arrayToDataTable([
+                ["Category Name", "TotalSpend", {role: "style"}]
+                <?php
+                foreach ($bargraph_data as $bar) {
+                    $category_name = addslashes($bar['category_name']);
+                    $total_spend = $bar['SUM(expenses.expenses_amount)'];
+                    $color = 'blue'; // You can customize this based on your data if needed
+                    echo ",['$category_name', $total_spend, '$color']"; // This adds a row for each bar
+                }
+                ?>
+            ]);
 
             var options = {
-                title: "Expenses top five category",
+                title: "expenses by Category",
+                titleTextStyle: {color: 'white', bold: false},
                 width: 600,
                 height: 400,
                 bar: {groupWidth: "95%"},
                 legend: {position: "none"},
+                backgroundColor: "#333",
             };
-            var chart = new google.visualization.BarChart(document.getElementById("top-expense-categories"));
-            chart.draw(view, options);
+
+            var chart = new google.visualization.BarChart(document.getElementById("top-expenses-categories"));
+            chart.draw(data, options);
         }
     </script>
+
 </head>
 
 <body>
@@ -120,21 +170,22 @@ if(isset($_SESSION['income'])) {
         </div>
         <div class="summary-item">
             <div class="summary-title">Expenses</div>
-            <div class="summary-value">Rs. ${expenses}</div>
+            <div class="summary-value">Rs . <?php echo $expenses ?></div>
         </div>
         <div class="summary-item">
             <div class="summary-title">Net Income</div>
-            <div class="summary-value">Rs. ${netIncome}</div>
+            <div class="summary-value">Rs . <?php echo $net_income ?></div>
+
         </div>
     </div>
 
     <a href="income_transaction.php">
         <button>Income Transaction</button>
     </a>
-    <a href="ansaction.php">
+    <a href="expenses_transaction.php">
         <button>Expenses Transaction</button>
     </a>
-    <a href="spendlimit">
+    <a href="spend_mimit.php">
         <button>Spend Limit</button>
     </a>
 
@@ -142,7 +193,7 @@ if(isset($_SESSION['income'])) {
         <div class="chart" id="expenses-by-group">
             <!-- Placeholder for Pie Chart -->
         </div>
-        <div class="chart" id="top-expense-categories">
+        <div class="chart" id="top-expenses-categories">
             <!-- Placeholder for Bar Chart -->
         </div>
         <div class="chart" id="expenses-by-week">

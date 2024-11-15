@@ -44,42 +44,37 @@ class IncomeController
         }
         $income = new IncomeDB();
 
-        $all_income_transaction = $income->get_all_income_transaction($user_name, $start_filter_date, $end_filter_date);
-
-        return $all_income_transaction;
+        return $income->get_all_income_transaction($user_name, $start_filter_date, $end_filter_date);
     }
 
-    public function get_piechart_data($start_filter_date, $end_filter_date)
+    public function get_pie_chart_data($start_filter_date, $end_filter_date)
     {
         $user_name = $_SESSION['userName']; // Access session variable
         if ($start_filter_date == null) {
             $start_filter_date = date("Y-m");
         }
         $income = new IncomeDB();
-        $piechart_data = $income->get_income_with_amount_and_category($user_name, $start_filter_date, $end_filter_date);
-        return $piechart_data;
+        return $income->get_income_with_amount_and_category($user_name, $start_filter_date, $end_filter_date);
     }
 
-    public function get_linechart_data($start_filter_date, $end_filter_date)
+    public function get_line_chart($start_filter_date, $end_filter_date)
     {
         $user_name = $_SESSION['userName']; // Access session variable
         if ($start_filter_date == null) {
             $start_filter_date = date("Y-m");
         }
         $income = new IncomeDB();
-        $linegraph_data = $income->get_income_by_day($user_name, $start_filter_date, $end_filter_date);
-        return $linegraph_data;
+        return $income->get_income_by_day($user_name, $start_filter_date, $end_filter_date);
     }
 
-    public function get_bargraph_data($start_filter_date, $end_filter_date)
+    public function get_bar_graph_data($start_filter_date, $end_filter_date)
     {
         $user_name = $_SESSION['userName']; // Access session variable
         if ($start_filter_date == null) {
             $start_filter_date = date("Y-m");
         }
         $income = new IncomeDB();
-        $bargraph_data = $income->get_top_five_category($user_name, $start_filter_date, $end_filter_date);
-        return $bargraph_data;
+        return $income->get_top_five_category($user_name, $start_filter_date, $end_filter_date);
     }
 
     public function delete_income_transaction()
@@ -108,7 +103,6 @@ class IncomeController
     }
 }
 
-// No need to call session_start() inside each method anymore
 $income = new IncomeController();
 
 if (isset($_POST['submit']) && $_POST['submit'] == 'add-income') {
@@ -123,14 +117,14 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'filter') {
     $start_filter_date = isset($_POST['startFilterDate']) ? $_POST['startFilterDate'] : null;
     $end_filter_date = isset($_POST['endFilterDate']) ? $_POST['endFilterDate'] : null;
     $transaction = $income->get_all_income_transaction($start_filter_date, $end_filter_date);
-    $piechart_data = $income->get_piechart_data($start_filter_date, $end_filter_date);
-    $linegraph_data = $income->get_linechart_data($start_filter_date, $end_filter_date);
-    $bargraph_data  = $income->get_bargraph_data($start_filter_date, $end_filter_date);
+    $pie_chart_data = $income->get_pie_chart_data($start_filter_date, $end_filter_date);
+    $line_graph_data = $income->get_line_chart($start_filter_date, $end_filter_date);
+    $bar_graph_data  = $income->get_bar_graph_data($start_filter_date, $end_filter_date);
 
     $_SESSION['transaction'] = $transaction;
-    $_SESSION['piechart_data'] = $piechart_data;
-    $_SESSION['linegraph_data'] = $linegraph_data;
-    $_SESSION['bargraph_data'] = $bargraph_data;
+    $_SESSION['piechart_data'] = $pie_chart_data;
+    $_SESSION['linegraph_data'] = $line_graph_data;
+    $_SESSION['bargraph_data'] = $bar_graph_data;
 
     header("Location: ../../Public/Markup/income_transaction.php");
 }
