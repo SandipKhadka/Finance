@@ -188,11 +188,8 @@ $expenses_controller->close_db_connection();
             <?php
                 if(isset($_SESSION["expenses_error"])){
                     $error_message = $_SESSION["expenses_error"];
-                    unset($_SESSION['expenses_error']);
-                    header('Location: '.$_SERVER['PHP_SELF']);
-                }
-                if(isset($error_message)){
                     echo $error_message;
+                    unset($_SESSION['expenses_error']);
                 }
             ?>
         </div>
