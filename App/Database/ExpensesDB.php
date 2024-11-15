@@ -39,6 +39,31 @@ class ExpensesDB
         return null;
     }
 
+    public function get_expenses_by_category($user_name, $category_id)
+    {
+        $user_id = $this->get_user_id($user_name);
+        $sql = "SELECT SUM(expenses_amount) FROM expenses " .
+            "WHERE $user_id=? AND expenses_category=? AND YEAR(date)=? AND MONTH(date) =?";
+
+        $amount = 0;
+        $statement = mysqli_stmt_init($this->connection);
+
+        $date = date("Y-m");
+        list($year,$month) = explode("-",$date);
+
+        if (mysqli_stmt_prepare($statement, $sql)) {
+            mysqli_stmt_bind_param($statement, "iiii", $user_id, $category_id, $year, $month);
+            mysqli_stmt_execute($statement);
+            mysqli_stmt_bind_result($statement, $amount);
+            if (mysqli_stmt_fetch($statement)) {
+                return $amount;
+            }
+        }
+        return $amount;
+
+
+    }
+
     public function get_expenses_amount($user_name)
     {
         $user_id = $this->get_user_id($user_name);

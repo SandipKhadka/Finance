@@ -163,7 +163,7 @@ $expenses_controller->close_db_connection();
 
 <body>
 <div class="container">
-    <a href="dashboard">
+    <a href="dashboard.php">
         <button>&#x2190; Dashboard</button>
     </a>
     <div class="expense-form">
@@ -185,7 +185,16 @@ $expenses_controller->close_db_connection();
         </form>
 
         <div>
-            <span>${spendLimitError}</span>
+            <?php
+                if(isset($_SESSION["expenses_error"])){
+                    $error_message = $_SESSION["expenses_error"];
+                    unset($_SESSION['expenses_error']);
+                    header('Location: '.$_SERVER['PHP_SELF']);
+                }
+                if(isset($error_message)){
+                    echo $error_message;
+                }
+            ?>
         </div>
 
         <form action="../../App/Controller/ExpensesController.php" method="post">
@@ -275,7 +284,6 @@ $expenses_controller->close_db_connection();
                     echo "</tr>";
                 }
                 ?>
-
             </form>
         </tr>
     </table>

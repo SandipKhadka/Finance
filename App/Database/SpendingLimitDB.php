@@ -38,6 +38,24 @@ class SpendingLimitDB
         return null;
     }
 
+    public function get_spend_limit_for_category($user_name,$category) {
+        $user_id = $this->get_user_id($user_name);
+        $sql = "SELECT amount FROM spending_limit WHERE user_id = ? AND category_id = ?";
+
+        $amount = 0;
+
+        $statement = mysqli_stmt_init($this->connection);
+        if (mysqli_stmt_prepare($statement, $sql)) {
+            mysqli_stmt_bind_param($statement, "ii", $user_id, $category);
+            mysqli_stmt_execute($statement);
+            mysqli_stmt_bind_result($statement, $amount);
+            if (mysqli_stmt_fetch($statement)) {
+                return $amount;
+            }
+        }
+        return $amount;
+    }
+
     public function get_spending_limit($user_name)
     {
         $user_id = $this->get_user_id($user_name);
