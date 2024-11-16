@@ -27,8 +27,10 @@ class ExpensesController
             if ($expenses_amount + (int)$amount >= $spend_limit_amount) {
                 $_SESSION['expenses_error'] = "Expenses cannot be more than the spend limit the left amount is " . $left_limit;
             } else {
-                $expenses->add_expenses($amount, $category_id, $remarks, $user_name);
             }
+        } else {
+        $expenses->add_expenses($amount, $category_id, $remarks, $user_name);
+
         }
         header("Location: ../../Public/Markup/expenses_transaction.php");
     }

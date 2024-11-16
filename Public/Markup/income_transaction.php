@@ -3,7 +3,7 @@ require_once __DIR__ . '/../../App/Controller/IncomeController.php';
 $incomeController = new IncomeController();
 $income_category = $incomeController->get_income_category();
 $income_transaction = [];
-session_start();
+
 if (isset($_SESSION['transaction'])) {
     $income_transaction = $_SESSION['transaction'];
     unset($_SESSION['transaction']);
@@ -35,7 +35,6 @@ if(isset($_SESSION['bargraph_data'])){
     $bargraph_data = $incomeController->get_bar_graph_data(null, null);
 }
 
-print_r($bargraph_data);
 $incomeController->close_db_connection();
 ?>
 <!DOCTYPE html>
