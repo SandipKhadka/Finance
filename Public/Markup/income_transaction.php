@@ -27,8 +27,8 @@ if (isset($_SESSION['linegraph_data'])) {
     $linegraph_data = $incomeController->get_line_chart(null, null);
 }
 
-$bargraph_data =[];
-if(isset($_SESSION['bargraph_data'])){
+$bargraph_data = [];
+if (isset($_SESSION['bargraph_data'])) {
     $bargraph_data = $_SESSION['bargraph_data'];
     unset($_SESSION['bargraph_data']);
 } else {
@@ -130,7 +130,7 @@ $incomeController->close_db_connection();
         function drawChart() {
             // Start with a static header row for the chart
             var data = google.visualization.arrayToDataTable([
-                ["Category Name", "TotalSpend", { role: "style" }]
+                ["Category Name", "TotalSpend", {role: "style"}]
                 <?php
                 foreach ($bargraph_data as $bar) {
                     $category_name = addslashes($bar['category_name']);
@@ -143,11 +143,11 @@ $incomeController->close_db_connection();
 
             var options = {
                 title: "Income by Category",
-                titleTextStyle: { color: 'white', bold: false },
+                titleTextStyle: {color: 'white', bold: false},
                 width: 600,
                 height: 400,
-                bar: { groupWidth: "95%" },
-                legend: { position: "none" },
+                bar: {groupWidth: "95%"},
+                legend: {position: "none"},
                 backgroundColor: "#333",
             };
 

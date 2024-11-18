@@ -186,11 +186,11 @@ $expenses_controller->close_db_connection();
 
         <div>
             <?php
-                if(isset($_SESSION["expenses_error"])){
-                    $error_message = $_SESSION["expenses_error"];
-                    echo $error_message;
-                    unset($_SESSION['expenses_error']);
-                }
+            if (isset($_SESSION["expenses_error"])) {
+                $error_message = $_SESSION["expenses_error"];
+                echo $error_message;
+                unset($_SESSION['expenses_error']);
+            }
             ?>
         </div>
 

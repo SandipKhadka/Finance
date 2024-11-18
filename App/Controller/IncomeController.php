@@ -103,6 +103,10 @@ class IncomeController
     }
 }
 
+if(!isset($_SESSION['userName'])) {
+    header('location: /phpfinance');
+    die;
+}
 $income = new IncomeController();
 
 if (isset($_POST['submit']) && $_POST['submit'] == 'add-income') {

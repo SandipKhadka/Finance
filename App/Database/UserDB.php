@@ -1,5 +1,6 @@
 <?php
-include_once "../Config/DBConnection.php";
+
+require_once __DIR__.'/../Config/DBConnection.php';
 
 class UserDB
 {

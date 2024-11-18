@@ -4,6 +4,7 @@ require_once __DIR__ . '/../Database/ExpensesDB.php';
 
 session_start();
 
+
 class DashboardController
 {
     public function get_income()
@@ -50,6 +51,11 @@ class DashboardController
     {
         DBConnection::close_connection();
     }
+}
+
+if(!isset($_SESSION['userName'])) {
+    header('location: /phpfinance');
+    die;
 }
 
 $dashboard = new DashboardController();

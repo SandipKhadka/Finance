@@ -1,3 +1,11 @@
+<?php
+require_once __DIR__ . '/App/Controller/UserController.php';
+$user_name = null;
+if(isset($_SESSION['entered-username'])) {
+    $user_name = $_SESSION['entered-username'];
+    unset($_SESSION['entered-username']);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,11 +23,12 @@
     </div>
     <div class="container">
         <label for="uname"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" id="uname" name="userName" required/>
+        <input type="text" placeholder="Enter Username" id="uname" name="userName" value="<?= $user_name ?>" required/>
         <div class="error">
             <?php
-            if (isset($_GET['username-error'])) {
-                echo "<span>" . $_GET['username-error'] . "</span>";
+            if (isset($_SESSION['username-error'])) {
+                echo "<span>" . $_SESSION['username-error'] . "</span>";
+                unset($_SESSION['username-error']);
             }
             ?>
         </div>
@@ -27,14 +36,15 @@
         <input type="password" placeholder="Enter Password" id="psw" name="password" required/>
         <div class="error">
             <?php
-            if (isset($_GET['password-error'])) {
-                echo "<span>" . $_GET['password-error'] . "</span>";
+            if (isset($_SESSION['password-error'])) {
+                echo "<span>" . $_SESSION['password-error'] . "</span>";
+                unset($_SESSION['password-error']);
             }
             ?>
         </div>
         <button type="submit" name="login" value="login">Login</button>
         <label>
-            <input type="checkbox" checked="checked" name="remember"/> Remember
+            <input type="checkbox"  name="remember"/> Remember
             me
         </label>
     </div>

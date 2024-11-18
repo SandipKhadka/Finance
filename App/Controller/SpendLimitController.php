@@ -29,6 +29,10 @@ class SpendLimitController {
         return $spend_limit_data;
     }
 }
+if(!isset($_SESSION['userName'])) {
+    header('location: /phpfinance');
+    die;
+}
 
 $spend_limit = new SpendLimitController();
 if(isset($_POST['submit']) && $_POST['submit'] == "add"){
