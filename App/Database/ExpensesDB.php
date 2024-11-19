@@ -49,7 +49,7 @@ class ExpensesDB
         $statement = mysqli_stmt_init($this->connection);
 
         $date = date("Y-m");
-        list($year,$month) = explode("-",$date);
+        list($year, $month) = explode("-", $date);
 
         if (mysqli_stmt_prepare($statement, $sql)) {
             mysqli_stmt_bind_param($statement, "iiii", $user_id, $category_id, $year, $month);
@@ -97,6 +97,28 @@ class ExpensesDB
             mysqli_stmt_bind_param($statement, "si", $category_name, $user_id);
             mysqli_stmt_execute($statement);
         }
+    }
+
+    public function get_original_expenses($user_name, $category_id, $expenses_id)
+    {
+        $user_id = $this->get_user_id($user_name);
+
+        $sql = "SELECT expenses_amount FROM expenses " .
+            "WHERE user_id=? AND expenses_category=? AND expenses_id=? And YEAR(date)=? AND MONTH(date)=?";
+        $amount = 0;
+        $statement = mysqli_stmt_init($this->connection);
+        $date = date("Y-m");
+        list($year, $month) = explode("-", $date);
+        if (mysqli_stmt_prepare($statement, $sql)) {
+            mysqli_stmt_bind_param($statement, "iiiii", $user_id, $category_id,
+                $expenses_id, $year, $month);
+            mysqli_stmt_execute($statement);
+            mysqli_stmt_bind_result($statement, $amount);
+            if (mysqli_stmt_fetch($statement)) {
+                return $amount;
+            }
+        }
+        return $amount;
     }
 
     public function get_expenses_category($user_name)
@@ -160,10 +182,10 @@ class ExpensesDB
     {
         $user_id = $this->get_user_id($user_name);
         $sql = "DELETE FROM expenses " .
-            "WHERE expenses_id=?";
+            "WHERE expenses_id=? AND user_id=?";
         $statement = mysqli_stmt_init($this->connection);
         if (mysqli_stmt_prepare($statement, $sql)) {
-            mysqli_stmt_bind_param($statement, "i", $expenses_id);
+            mysqli_stmt_bind_param($statement, "ii", $expenses_id, $user_id);
             mysqli_stmt_execute($statement);
 
         }

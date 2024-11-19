@@ -44,7 +44,7 @@ $incomeController->close_db_connection();
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="../CSS/income_transaction.css">
     <script src="../js/button_hide.js"></script>
-    <title>Income Transaction</title>
+    <title>Income Transaction</title>s
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script type="text/javascript">
@@ -238,7 +238,7 @@ $incomeController->close_db_connection();
 
     <table class="transactions-table">
         <tr>
-            <th>Expenses Amount</th>
+            <th>income Amount</th>
             <th>Category</th>
             <th>Remarks</th>
             <td>Date</td>
@@ -246,48 +246,68 @@ $incomeController->close_db_connection();
             <th>Action</th>
         </tr>
         <tr>
-            <form action="../../App/Controller/IncomeController.php" method="post">
-                <?php
-                foreach ($income_transaction as $transaction) {
-                    echo "<tr>";
-                    echo "<td>" .
-                        "<label for='amount" . $transaction['income_id'] . "' id='defaultAmount" . $transaction['income_id'] . "'>" . $transaction['income_amount'] . "</label>" .
-                        "<input type='number' name='amount' id='amount-" . $transaction['income_id'] . "' value='" . $transaction['income_amount'] . "' hidden/>" .
-                        "</td>";
+            <?php
+            foreach ($income_transaction as $transaction) {
+                echo '<form action="../../App/Controller/IncomeController.php" method="post">';
+                echo "<tr>";
 
-                    echo "<td>" .
-                        "<span id='defaultCategory" . $transaction['income_id'] . "'>" . $transaction['category_name'] . "</span>" .
-                        "<select name='categoryId' id='categoryId-" . $transaction['income_id'] . "' hidden>" .
-                        "<option selected value='" . $transaction['income_category'] . "'>Select Category</option>";
+                echo "<td>" .
+                    "<label for='amount" . $transaction['income_id'] . "' "
+                    . "id='defaultAmount" . $transaction['income_id'] . "'>"
+                    . $transaction['income_amount'] . "</label>" .
+                    "<input type='number' name='amount' "
+                    . "id='amount-" . $transaction['income_id'] . ""
+                    . "' value='" . $transaction['income_amount'] . "' hidden/>" .
+                    "</td>";
 
-                    foreach ($income_category as $category) {
-                        echo "<option value='" . $category['category_id'] . "'>" . $category['category_name'] . "</option>";
-                    }
+                echo "<td>" .
+                    "<span id='defaultCategory" . $transaction['income_id'] . "'>"
+                    . $transaction['category_name'] . "</span>" .
+                    "<select name='categoryId' id='categoryId-" . $transaction['income_id'] . "' hidden>" .
+                    "<option selected value='" . $transaction['income_category'] . "'>"
+                    . $transaction['category_name'] . "</option>";
 
-                    echo "</select>" .
-                        "</td>";
-
-                    echo "<td>" .
-                        "<label for='remarks" . $transaction['income_id'] . "' id='defaultRemarks" . $transaction['income_id'] . "'>" . $transaction['remarks'] . "</label>" .
-                        "<input type='text' name='remarks' id='remarks-" . $transaction['income_id'] . "' value='" . $transaction['remarks'] . "' hidden/>" .
-                        "</td>";
-
-                    echo '<td>' . $transaction['date'] . '</td>';
-                    echo '<td>' . $transaction['time'] . '</td>';
-
-                    echo "<td>" .
-                        "<input type='number' value='" . $transaction['income_id'] . "' hidden='hidden' name='income-id' id='id-" . $transaction['income_id'] . "'>" .
-                        "<button type='submit' name='submit' id='delete-" . $transaction['income_id'] . "' value='delete'>Delete now</button>" .
-                        "<button type='button' id='edit-" . $transaction['income_id'] . "' onclick='edit(" . $transaction['income_id'] . ")'>Edit</button>" .
-                        "<button type='submit' name='submit' id='update-" . $transaction['income_id'] . "' value='update' hidden='hidden'>Update Now</button>" .
-                        "<button type='button' id='back-" . $transaction['income_id'] . "' hidden='hidden' onclick='back(" . $transaction['income_id'] . ")'>Back</button>" .
-                        "</td>";
-
-                    echo "</tr>";
+                foreach ($income_category as $category) {
+                    echo "<option value='" . $category['category_id'] . "'>"
+                        . $category['category_name'] . "</option>";
                 }
-                ?>
+                echo "</select>" .
+                    "</td>";
 
-            </form>
+                echo "<td>" .
+                    "<label for='remarks" . $transaction['income_id'] . "' i"
+                    . "d='defaultRemarks" . $transaction['income_id'] . "'>"
+                    . $transaction['remarks'] . "</label>" .
+                    "<input type='text' name='remarks'"
+                    . " id='remarks-" . $transaction['income_id'] . "'"
+                    . " value='" . $transaction['remarks'] . "' hidden/>" .
+                    "</td>";
+
+                echo '<td>' . $transaction['date'] . '</td>';
+                echo '<td>' . $transaction['time'] . '</td>';
+
+                echo "<td>" .
+                    "<input type='number' value='" . $transaction['income_id'] . "' "
+                    . "name='income-id'  hidden>" .
+                    "<button type='submit' name='submit' "
+                    . "id='delete-" . $transaction['income_id'] . "'"
+                    . " value='delete'>Delete now</button>" .
+                    "<button type='button' "
+                    . "id='edit-" . $transaction['income_id'] . "' "
+                    . "onclick='edit(" . $transaction['income_id'] . ")'>Edit</button>" .
+                    "<button type='submit' name='submit' "
+                    . "id='update-" . $transaction['income_id'] . "' "
+                    . "value='update' hidden='hidden'>Update Now</button>" .
+                    "<button type='button' "
+                    . "id='back-" . $transaction['income_id'] . "' "
+                    . "hidden='hidden' onclick='back(" . $transaction['income_id'] . ")'>Back</button>" .
+                    "</td>";
+                echo "</tr>";
+                echo "</form>";
+            }
+
+            ?>
+
         </tr>
     </table>
 

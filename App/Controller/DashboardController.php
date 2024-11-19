@@ -38,9 +38,9 @@ class DashboardController
 
         $user_name = $_SESSION['userName'];
 
-        $pie_chart_data = $expenses->get_expenses_with_amount_and_category($user_name, $date,null);
-        $line_graph_data = $expenses->get_expenses_by_day($user_name, $date,null);
-        $bar_graph_data = $expenses->get_top_five_category($user_name, $date,null);
+        $pie_chart_data = $expenses->get_expenses_with_amount_and_category($user_name, $date, null);
+        $line_graph_data = $expenses->get_expenses_by_day($user_name, $date, null);
+        $bar_graph_data = $expenses->get_top_five_category($user_name, $date, null);
 
         $_SESSION['piechart_data'] = $pie_chart_data;
         $_SESSION['linegraph_data'] = $line_graph_data;
@@ -53,7 +53,7 @@ class DashboardController
     }
 }
 
-if(!isset($_SESSION['userName'])) {
+if (!isset($_SESSION['userName'])) {
     header('location: /phpfinance');
     die;
 }

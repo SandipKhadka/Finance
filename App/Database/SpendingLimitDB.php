@@ -9,17 +9,23 @@ class SpendingLimitDB
         $this->connection = DBConnection::get_connection();  // Open the connection once
     }
 
-    public function add_spending_limit($user_name, $amount, $category_id)
+    public function get_spend_limit_for_category($user_name, $category)
     {
         $user_id = $this->get_user_id($user_name);
-        $sql = "INSERT INTO spending_limit(category_id, user_id, amount,date) " .
-            "VALUES (?,?,?,CURDATE())";
+        $sql = "SELECT amount FROM spending_limit WHERE user_id = ? AND category_id = ?";
+
+        $amount = 0;
 
         $statement = mysqli_stmt_init($this->connection);
         if (mysqli_stmt_prepare($statement, $sql)) {
-            mysqli_stmt_bind_param($statement, "iii", $category_id, $user_id, $amount);
+            mysqli_stmt_bind_param($statement, "ii", $user_id, $category);
             mysqli_stmt_execute($statement);
+            mysqli_stmt_bind_result($statement, $amount);
+            if (mysqli_stmt_fetch($statement)) {
+                return $amount;
+            }
         }
+        return $amount;
     }
 
     public function get_user_id($user_name)
@@ -36,24 +42,6 @@ class SpendingLimitDB
             }
         }
         return null;
-    }
-
-    public function get_spend_limit_for_category($user_name,$category) {
-        $user_id = $this->get_user_id($user_name);
-        $sql = "SELECT amount FROM spending_limit WHERE user_id = ? AND category_id = ?";
-
-        $amount = 0;
-
-        $statement = mysqli_stmt_init($this->connection);
-        if (mysqli_stmt_prepare($statement, $sql)) {
-            mysqli_stmt_bind_param($statement, "ii", $user_id, $category);
-            mysqli_stmt_execute($statement);
-            mysqli_stmt_bind_result($statement, $amount);
-            if (mysqli_stmt_fetch($statement)) {
-                return $amount;
-            }
-        }
-        return $amount;
     }
 
     public function get_spending_limit($user_name)
@@ -84,20 +72,13 @@ class SpendingLimitDB
         return null;
     }
 
-    public function update_spend_limit($user_name, $amount, $category_id)
+    public function add_or_update_spend_limit($user_name, $amount, $category_id)
     {
-        $user_id = $this->get_user_id($user_name);
-        $sql = "UPDATE spending_limit" .
-            " SET amount=? " .
-            "WHERE user_id=? AND category_id=? AND YEAR(date)=? AND MONTH(date)=? ";
-        $date = date("Y-m");
-        list($year, $month) = explode("-", $date);
-        $statement = mysqli_stmt_init($this->connection);
-
-        if (mysqli_stmt_prepare($statement, $sql)) {
-            mysqli_stmt_bind_param($statement, "iiiii", $amount, $user_id, $category_id, $year, $month);
-            mysqli_stmt_execute($statement);
+        if ($this->does_spend_limit_already_exist($user_name, $category_id)) {
+            $this->update_spend_limit($user_name, $amount, $category_id);
+            return;
         }
+        $this->add_spending_limit($user_name, $amount, $category_id);
     }
 
     public function does_spend_limit_already_exist($user_name, $category_id)
@@ -121,13 +102,33 @@ class SpendingLimitDB
         return false;
     }
 
-    public function add_or_update_spend_limit($user_name, $amount, $category_id)
+    public function update_spend_limit($user_name, $amount, $category_id)
     {
-        if($this->does_spend_limit_already_exist($user_name, $category_id)){
-            $this->update_spend_limit($user_name, $amount, $category_id);
-            return;
+        $user_id = $this->get_user_id($user_name);
+        $sql = "UPDATE spending_limit" .
+            " SET amount=? " .
+            "WHERE user_id=? AND category_id=? AND YEAR(date)=? AND MONTH(date)=? ";
+        $date = date("Y-m");
+        list($year, $month) = explode("-", $date);
+        $statement = mysqli_stmt_init($this->connection);
+
+        if (mysqli_stmt_prepare($statement, $sql)) {
+            mysqli_stmt_bind_param($statement, "iiiii", $amount, $user_id, $category_id, $year, $month);
+            mysqli_stmt_execute($statement);
         }
-        $this->add_spending_limit($user_name, $amount, $category_id);
+    }
+
+    public function add_spending_limit($user_name, $amount, $category_id)
+    {
+        $user_id = $this->get_user_id($user_name);
+        $sql = "INSERT INTO spending_limit(category_id, user_id, amount,date) " .
+            "VALUES (?,?,?,CURDATE())";
+
+        $statement = mysqli_stmt_init($this->connection);
+        if (mysqli_stmt_prepare($statement, $sql)) {
+            mysqli_stmt_bind_param($statement, "iii", $category_id, $user_id, $amount);
+            mysqli_stmt_execute($statement);
+        }
     }
 
 }

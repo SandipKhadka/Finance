@@ -29,10 +29,12 @@ unset($_SESSION['entered-username']);
            required/>
 
     <label for="last-name">Last Name:</label>
-    <input type="text" id="last-name" name="lastName" placeholder="Enter your last name" value="<?= $last_name ?>" required/>
+    <input type="text" id="last-name" name="lastName" placeholder="Enter your last name" value="<?= $last_name ?>"
+           required/>
 
     <label for="username">Username:</label>
-    <input type="text" id="username" name="userName" placeholder="Choose a username" value="<?= $user_name ?>" required/>
+    <input type="text" id="username" name="userName" placeholder="Choose a username" value="<?= $user_name ?>"
+           required/>
     <div class="error">
         <?php
         if (isset($_SESSION['error'])) {

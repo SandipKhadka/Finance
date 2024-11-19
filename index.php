@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/App/Controller/UserController.php';
 $user_name = null;
-if(isset($_SESSION['entered-username'])) {
+if (isset($_SESSION['entered-username'])) {
     $user_name = $_SESSION['entered-username'];
     unset($_SESSION['entered-username']);
 }
@@ -44,7 +44,7 @@ if(isset($_SESSION['entered-username'])) {
         </div>
         <button type="submit" name="login" value="login">Login</button>
         <label>
-            <input type="checkbox"  name="remember"/> Remember
+            <input type="checkbox" name="remember"/> Remember
             me
         </label>
     </div>

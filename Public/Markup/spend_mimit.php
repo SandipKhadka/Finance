@@ -25,21 +25,21 @@ $spend_limit_data = $spend_limit_controller->get_all_spend_limit();
             <th>Limit</th>
             <th>Category</th>
         </tr>
-                <?php
-                    foreach ($spend_limit_data as $spend_limit) {
-                        echo "<tr>";
-                        echo "<td>" . $spend_limit['amount'] . "</td>";
-                        echo "<td>" . $spend_limit['category_name'] . "</td>";
-                        echo "</tr>";
-                    }
-                ?>
+        <?php
+        foreach ($spend_limit_data as $spend_limit) {
+            echo "<tr>";
+            echo "<td>" . $spend_limit['amount'] . "</td>";
+            echo "<td>" . $spend_limit['category_name'] . "</td>";
+            echo "</tr>";
+        }
+        ?>
     </table>
     <form action="../../App/Controller/SpendLimitController.php" method="post" class="form-container">
         <input
-            type="text"
-            name="amount"
-            placeholder="Enter the spending limit"
-            required
+                type="text"
+                name="amount"
+                placeholder="Enter the spending limit"
+                required
         />
         <select name="category-id" id="category-id" required>
             <option value="">Select Category</option>

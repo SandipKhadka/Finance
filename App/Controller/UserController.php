@@ -42,9 +42,8 @@ class UserController
         }
         if ($user->login_user($user_name, $hashed_password)) {
             $_SESSION["userName"] = $user_name;
-            if(isset($_POST['remember'])) {
-                $user_name = $_SESSION['userName'];
-                setcookie("userName", $user_name, time() +(86400 * 30), "/");
+            if (isset($_POST['remember'])) {
+                setcookie("userName", $user_name, time() + (86400 * 30), "/");
             }
             header('Location: ../../Public/Markup/dashboard.php');
             exit();
@@ -56,14 +55,14 @@ class UserController
 
     public function logout_user()
     {
-        setcookie("userName", "", time()-3600,"/");
+        setcookie("userName", "", time() - 3600, "/");
         session_unset();
         session_destroy();
         header('location: /phpfinance');
     }
 }
 
-if(isset($_COOKIE['userName'])) {
+if (isset($_COOKIE['userName'])) {
     $_SESSION['userName'] = $_COOKIE['userName'];
 }
 

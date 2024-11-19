@@ -80,6 +80,8 @@ class IncomeController
     public function delete_income_transaction()
     {
         $income_id = $_POST['income-id'];
+        print_r($income_id);
+        //print_r($income_id);
         $user_name = $_SESSION['userName']; // Access session variable
         $income = new IncomeDB();
         $income->delete_income_transaction($user_name, $income_id);
@@ -90,8 +92,12 @@ class IncomeController
         $income_id = $_POST['income-id'];
         $amount = $_POST['amount'];
         $category_id = $_POST['categoryId'];
-        $remarks = $_POST['remarks'];
 
+        $remarks = $_POST['remarks'];
+        print_r($amount);
+        print_r($category_id);
+        print_r($remarks);
+        print_r($income_id);
         $user_name = $_SESSION['userName']; // Access session variable
         $income = new IncomeDB();
         $income->update_income_transaction($user_name, $amount, $remarks, $category_id, $income_id);
@@ -103,7 +109,7 @@ class IncomeController
     }
 }
 
-if(!isset($_SESSION['userName'])) {
+if (!isset($_SESSION['userName'])) {
     header('location: /phpfinance');
     die;
 }
@@ -123,7 +129,7 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'filter') {
     $transaction = $income->get_all_income_transaction($start_filter_date, $end_filter_date);
     $pie_chart_data = $income->get_pie_chart_data($start_filter_date, $end_filter_date);
     $line_graph_data = $income->get_line_chart($start_filter_date, $end_filter_date);
-    $bar_graph_data  = $income->get_bar_graph_data($start_filter_date, $end_filter_date);
+    $bar_graph_data = $income->get_bar_graph_data($start_filter_date, $end_filter_date);
 
     $_SESSION['transaction'] = $transaction;
     $_SESSION['piechart_data'] = $pie_chart_data;
@@ -135,10 +141,10 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'filter') {
 
 if (isset($_POST['submit']) && $_POST['submit'] == 'delete') {
     $income->delete_income_transaction();
-    header('Location: ../../Public/Markup/income_transaction.php');
+//    header('Location: ../../Public/Markup/income_transaction.php');
 }
 
 if (isset($_POST['submit']) && $_POST['submit'] == 'update') {
     $income->update_income_transaction();
-    header('Location: ../../Public/Markup/income_transaction.php');
+//    header('Location: ../../Public/Markup/income_transaction.php');
 }
