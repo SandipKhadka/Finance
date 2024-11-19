@@ -56,11 +56,15 @@ class UserController
 
     public function logout_user()
     {
-        setcookie("userName", "", time()-100);
+        setcookie("userName", "", time()-3600,"/");
         session_unset();
         session_destroy();
         header('location: /phpfinance');
     }
+}
+
+if(isset($_COOKIE['userName'])) {
+    $_SESSION['userName'] = $_COOKIE['userName'];
 }
 
 $user = new UserController();
