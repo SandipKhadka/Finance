@@ -141,10 +141,10 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'filter') {
 
 if (isset($_POST['submit']) && $_POST['submit'] == 'delete') {
     $income->delete_income_transaction();
-//    header('Location: ../../Public/Markup/income_transaction.php');
+    header('Location: ../../Public/Markup/income_transaction.php');
 }
 
 if (isset($_POST['submit']) && $_POST['submit'] == 'update') {
     $income->update_income_transaction();
-//    header('Location: ../../Public/Markup/income_transaction.php');
+    header('Location: ../../Public/Markup/income_transaction.php');
 }
