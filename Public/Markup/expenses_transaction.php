@@ -45,7 +45,7 @@ $expenses_controller->close_db_connection();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../CSS/expenses_transaction.css">
+    <link rel="stylesheet" href="../CSS/dashboard.css">
     <title>Expenses</title>
     <script src="../js/button_hide.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -71,14 +71,14 @@ $expenses_controller->close_db_connection();
             ?>
 
             var options = {
-                title: "expenses of this month",
+                title: "Expenses of this Month",
                 titleTextStyle: {
-                    color: 'white',
-                    bold: false
+                    color: 'black',
+                    bold: true
                 },
                 width: 600,
                 height: 400,
-                backgroundColor: "#333"
+                backgroundColor: "#e6e6e6"
             };
 
             var chart = new google.visualization.PieChart(document.getElementById("expenses-by-group"));
@@ -106,16 +106,15 @@ $expenses_controller->close_db_connection();
             ?>
             var options = {
                 chart: {
-                    title: "expenses by day",
-                    subtitle: "in millions of dollars (USD)",
+                    title: "Expenses By Day",
                 },
                 titleTextStyle: {
-                    color: 'white',
-                    bold: false
+                    color: 'black',
+                    bold: true
                 },
                 width: 600,
                 height: 400,
-                backgroundColor: "#333"
+                backgroundColor: "#e6e6e6"
             };
 
             var chart = new google.charts.Line(
@@ -145,13 +144,13 @@ $expenses_controller->close_db_connection();
             ]);
 
             var options = {
-                title: "expenses by Category",
-                titleTextStyle: { color: 'white', bold: false },
+                title: "Expenses By Category",
+                titleTextStyle: { color: 'black', bold: true },
                 width: 600,
                 height: 400,
                 bar: { groupWidth: "95%" },
                 legend: { position: "none" },
-                backgroundColor: "#333",
+                backgroundColor: "#e6e6e6",
             };
 
             var chart = new google.visualization.BarChart(document.getElementById("top-expenses-categories"));
@@ -166,7 +165,7 @@ $expenses_controller->close_db_connection();
         <a href="dashboard.php">
             <button>&#x2190; Dashboard</button>
         </a>
-        <div class="expense-form">
+        <div class="ie-form">
             <form action="../../App/Controller/ExpensesController.php" method="post">
                 <h2>Add New Transaction</h2>
                 <input type="number" name="amount" placeholder="Enter amount" required />
@@ -202,16 +201,6 @@ $expenses_controller->close_db_connection();
                 </button>
             </form>
         </div>
-    </div>
-    <div class="charts">
-        <div class="chart" id="top-expenses-categories">
-            <!-- Placeholder for Top 5 Expense Categories Chart -->
-        </div>
-        <div class="chart" id="expenses-by-group">
-            <!-- Placeholder for Expense by Category Chart -->
-        </div>
-        <div class="chart" id="expenses-by-day"></div>
-    </div>
 
     <div class="transactions">
         <h2>Transactions</h2>
@@ -236,8 +225,8 @@ $expenses_controller->close_db_connection();
                 <th>Expenses Amount</th>
                 <th>Category</th>
                 <th>Remarks</th>
-                <td>Date</td>
-                <td>Time</td>
+                <th>Date</td>
+                <th>Time</td>
                 <th>Action</th>
             </tr>
             <tr>
@@ -303,6 +292,17 @@ $expenses_controller->close_db_connection();
                 ?>
             </tr>
         </table>
+        
+        <h2>Charts</h2>
+        <div class="charts">
+        <div class="chart" id="top-expenses-categories">
+            <!-- Placeholder for Top 5 Expense Categories Chart -->
+        </div>
+        <div class="chart" id="expenses-by-group">
+            <!-- Placeholder for Expense by Category Chart -->
+        </div>
+        <div class="chart" id="expenses-by-day"></div>
+    </div>
 
     </div>
 </body>
