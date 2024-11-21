@@ -42,7 +42,7 @@ $incomeController->close_db_connection();
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="../CSS/income_transaction.css">
+    <link rel="stylesheet" href="../CSS/dashboard.css">
     <script src="../js/button_hide.js"></script>
     <title>Income Transaction</title>s
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -68,14 +68,14 @@ $incomeController->close_db_connection();
             ?>
 
             var options = {
-                title: "Income of this month",
+                title: "Income of this Month",
                 titleTextStyle: {
-                    color: 'white',
-                    bold: false
+                    color: 'black',
+                    bold: true
                 },
                 width: 600,
                 height: 400,
-                backgroundColor: "#333"
+                backgroundColor: "#e6e6e6"
             };
 
             var chart = new google.visualization.PieChart(document.getElementById("income-by-group"));
@@ -103,16 +103,15 @@ $incomeController->close_db_connection();
             ?>
             var options = {
                 chart: {
-                    title: "Income by day",
-                    subtitle: "in millions of dollars (USD)",
+                    title: "Income By Day",
                 },
                 titleTextStyle: {
-                    color: 'white',
-                    bold: false
+                    color: 'black',
+                    bold: true
                 },
                 width: 600,
                 height: 400,
-                backgroundColor: "#333"
+                backgroundColor: "#e6e6e6"
             };
 
             var chart = new google.charts.Line(
@@ -142,13 +141,13 @@ $incomeController->close_db_connection();
             ]);
 
             var options = {
-                title: "Income by Category",
-                titleTextStyle: {color: 'white', bold: false},
+                title: "Income By Category",
+                titleTextStyle: {color: 'black', bold: true},
                 width: 600,
                 height: 400,
                 bar: {groupWidth: "95%"},
                 legend: {position: "none"},
-                backgroundColor: "#333",
+                backgroundColor: "#e6e6e6",
             };
 
             var chart = new google.visualization.BarChart(document.getElementById("top-income-categories"));
@@ -163,7 +162,7 @@ $incomeController->close_db_connection();
     <a href="dashboard.php">
         <button>&#x2190; Dashboard</button>
     </a>
-    <div class="income-form">
+    <div class="ie-form">
         <form action="../../App/Controller/IncomeController.php" method="post">
             <h2>Add Income</h2>
             <input
@@ -172,7 +171,7 @@ $incomeController->close_db_connection();
                     name="amount"
                     placeholder="Enter amount"
             />
-            <select name="category-id" id="category-id">
+            <select name="category-id" id="category-id" required>
                 <option value="" selected>Select the Category</option>
                 <?php
                 foreach ($income_category as $category) {
@@ -204,20 +203,6 @@ $incomeController->close_db_connection();
         </form>
     </div>
 
-    <div class="charts">
-        <div class="chart" id="top-income-categories">
-            <!-- Placeholder for Bar Chart -->
-        </div>
-        <div class="chart" id="income-by-group">
-            <!-- Placeholder for Pie Chart -->
-        </div>
-        <div class="chart" id="income-by-day">
-            <!-- Placeholder for Line Chart -->
-        </div>
-        <div class="chart" id="income-by-week">
-            <!-- Placeholder for Line Chart -->
-        </div>
-    </div>
     <div class="transactions">
         <h2>Transactions</h2>
         <div class="filter-section">
@@ -238,11 +223,11 @@ $incomeController->close_db_connection();
 
     <table class="transactions-table">
         <tr>
-            <th>income Amount</th>
+            <th>Income Amount</th>
             <th>Category</th>
             <th>Remarks</th>
-            <td>Date</td>
-            <td>Time</td>
+            <th>Date</td>
+            <th>Time</td>
             <th>Action</th>
         </tr>
         <tr>
@@ -280,7 +265,7 @@ $incomeController->close_db_connection();
                     . $transaction['remarks'] . "</label>" .
                     "<input type='text' name='remarks'"
                     . " id='remarks-" . $transaction['income_id'] . "'"
-                    . " value='" . $transaction['remarks'] . "' hidden/>" .
+                    . " value='class='entry'" . $transaction['remarks'] . "' hidden/>" .
                     "</td>";
 
                 echo '<td>' . $transaction['date'] . '</td>';
@@ -310,6 +295,22 @@ $incomeController->close_db_connection();
 
         </tr>
     </table>
+    
+    <h2>Charts</h2>
+    <div class="charts">
+        <div class="chart" id="top-income-categories">
+            <!-- Placeholder for Bar Chart -->
+        </div>
+        <div class="chart" id="income-by-group">
+            <!-- Placeholder for Pie Chart -->
+        </div>
+        <div class="chart" id="income-by-day">
+            <!-- Placeholder for Line Chart -->
+        </div>
+        <div class="chart" id="income-by-week">
+            <!-- Placeholder for Line Chart -->
+        </div>
+    </div>
 
 </div>
 </body>

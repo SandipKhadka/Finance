@@ -69,14 +69,14 @@ $dashboard_controller->close_db_connection();
             ?>
 
             var options = {
-                title: "expenses of this month",
+                title: "Expenses Of This Month",
                 titleTextStyle: {
-                    color: 'white',
-                    bold: false
+                    color: 'black',
+                    bold: true
                 },
                 width: 600,
                 height: 400,
-                backgroundColor: "#333"
+                backgroundColor: "#e6e6e6"
             };
 
             var chart = new google.visualization.PieChart(document.getElementById("expenses-by-group"));
@@ -104,16 +104,16 @@ $dashboard_controller->close_db_connection();
             ?>
             var options = {
                 chart: {
-                    title: "expenses by day",
+                    title: "Expenses By Day",
                     subtitle: "in millions of dollars (USD)",
                 },
                 titleTextStyle: {
-                    color: 'white',
-                    bold: false
+                    color: 'black',
+                    bold: true
                 },
                 width: 600,
                 height: 400,
-                backgroundColor: "#333"
+                backgroundColor: "#e6e6e6"
             };
 
             var chart = new google.charts.Line(
@@ -133,6 +133,7 @@ $dashboard_controller->close_db_connection();
             var data = google.visualization.arrayToDataTable([
                 ["Category Name", "TotalSpend", {role: "style"}]
                 <?php
+
                 foreach ($bargraph_data as $bar) {
                     $category_name = addslashes($bar['category_name']);
                     $total_spend = $bar['SUM(expenses.expenses_amount)'];
@@ -143,13 +144,13 @@ $dashboard_controller->close_db_connection();
             ]);
 
             var options = {
-                title: "expenses by Category",
-                titleTextStyle: {color: 'white', bold: false},
+                title: "Expenses By Category",
+                titleTextStyle: {color: 'black', bold: true},
                 width: 600,
                 height: 400,
                 bar: {groupWidth: "95%"},
                 legend: {position: "none"},
-                backgroundColor: "#333",
+                backgroundColor: "#e6e6e6",
             };
 
             var chart = new google.visualization.BarChart(document.getElementById("top-expenses-categories"));
@@ -162,9 +163,9 @@ $dashboard_controller->close_db_connection();
 <body>
 <div class="container">
     <button>
-        <a href="../../App/Controller/UserController.php?submit=logout">Log out</a>
+        <a href="../../App/Controller/UserController.php?submit=logout" id="logout">Log out</a>
     </button>
-    <h1>Dashboard</h1>
+    <h1>BudgetBuddy</h1>
 
     <div class="summary">
         <div class="summary-item">
@@ -181,28 +182,32 @@ $dashboard_controller->close_db_connection();
 
         </div>
     </div>
-
-    <a href="income_transaction.php">
-        <button>Income Transaction</button>
-    </a>
-    <a href="expenses_transaction.php">
-        <button>Expenses Transaction</button>
-    </a>
-    <a href="spend_mimit.php">
-        <button>Spend Limit</button>
-    </a>
+    
+    <div class="buttoncontainer">
+        <div class="buttons">
+            <a href="income_transaction.php">
+                <button class="dashboard-button">Income</button>
+            </a>
+            <a href="expenses_transaction.php">
+                <button class="dashboard-button">Expenses</button>
+            </a>
+            <a href="spend_mimit.php">
+                <button class="dashboard-button">Budget</button>
+            </a>
+        </div>
+    </div>
 
     <div class="charts">
         <div class="chart" id="expenses-by-group">
             <!-- Placeholder for Pie Chart -->
         </div>
-        <div class="chart" id="top-expenses-categories">
+        <div class="chart" class="bottomcharts" id="top-expenses-categories">
             <!-- Placeholder for Bar Chart -->
         </div>
         <div class="chart" id="expenses-by-week">
             <!-- Placeholder for Line Chart -->
         </div>
-        <div class="chart" id="expenses-by-day">
+        <div class="chart" class="bottomcharts" id="expenses-by-day">
             <!-- Placeholder for Bar Chart -->
         </div>
     </div>
