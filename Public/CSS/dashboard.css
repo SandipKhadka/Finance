@@ -1,5 +1,5 @@
 body {
-    background-color: #232b38;
+    background-color: #ffffff;
     color: #e6e6e6;
     font-family: Arial, sans-serif;
     margin: 0;
@@ -11,8 +11,12 @@ body {
     margin: 0 auto;
 }
 
-h1 {
-    color: #f5a623;
+#logout{
+    color: red;
+}
+
+h1, h2 {
+    color: #2273dd;
     text-align: center;
 }
 
@@ -20,18 +24,41 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #333;
+    background-color: #f1eeee;
     padding: 10px 20px;
     margin-bottom: 20px;
 }
 
+.buttoncontainer{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+}
+
+.buttons{
+    display: flex;
+    justify-content: center;
+}
+
 button {
-    background-color: #f5a623;
+    background-color: #2273dd;
     border: none;
-    color: #333;
+    color: #ffffff;
     padding: 10px 15px;
     cursor: pointer;
     border-radius: 5px;
+    margin-right: 10px;
+}
+
+.dashboard-button{
+    margin-right: 50px;
+    height: 45px;
+    width: 130px;
+    font-size: 18px;
+}
+
+.add-button {
+    position: relative;
 }
 
 .add-options {
@@ -92,7 +119,7 @@ button {
 }
 
 .summary-item {
-    background-color: #333;
+    background-color: #b4b2b2;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
@@ -103,11 +130,12 @@ button {
 .summary-title {
     margin-bottom: 10px;
     font-size: 1.2em;
+    color: #000000;
 }
 
 .summary-value {
     font-size: 1.5em;
-    color: #6decaf;
+    color: #2273dd;
 }
 
 .charts {
@@ -116,9 +144,114 @@ button {
     grid-gap: 20px;
 }
 
+#expenses-by-group{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.bottomcharts{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 80%;
+}
+
 .chart {
-    background-color: #333;
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 10px;
     position: relative;
+    margin-bottom: 20px;
+}
+
+.ie-form {
+    margin-bottom: 20px;
+}
+
+.ie-form form input[type="number"],
+.ie-form form input[type="text"],
+.ie-form form select {
+    width: calc(100% - 20px);
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.ie-form form button[type="submit"] {
+    background-color: #2273dd;
+    border: none;
+    color: #ffffff;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.ie-form form button[type="submit"]:hover {
+    background-color: #4a90ec;
+}
+
+.chart h2 {
+    color: #f5a623;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.filter-section {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #e6e6e6;
+    border-radius: 10px;
+    color: black;
+}
+
+.filter-section form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.entry{
+    border-style: solid;
+}
+
+.filter-section form input[type="month"],
+.filter-section form button[type="submit"] {
+    background-color: #2273dd;
+    border: none;
+    color: #ffffff;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+.transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #555555; 
+}
+
+.transactions-table th,
+.transactions-table td {
+    padding: 10px;
+    border: 1px solid #6decaf;
+    text-align: left;
+}
+
+.transactions-table th {
+    background-color: #333;
+    color: #6decaf;
+}
+
+.transactions-table tr:nth-child(even) {
+    background-color: #444;
+}
+
+.transactions-table tr:hover {
+    background-color: #555;
 }
