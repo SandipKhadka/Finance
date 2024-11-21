@@ -225,8 +225,8 @@ $expenses_controller->close_db_connection();
                 <th>Expenses Amount</th>
                 <th>Category</th>
                 <th>Remarks</th>
-                <th>Date</td>
-                <th>Time</td>
+                <th>Date</th>
+                <th>Time</th>
                 <th>Action</th>
             </tr>
             <tr>
