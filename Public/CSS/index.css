@@ -53,14 +53,14 @@ button:hover {
 }
 
 .error {
-    color: red;
+    color:#f2685f;
 }
 
 .cancelbtn,
 .register {
     width: auto;
     padding: 10px 18px;
-    background-color: #f44336;
+    background-color: #f2685f;
     border-radius: 5px;
 }
 
