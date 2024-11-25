@@ -16,7 +16,7 @@ $spend_limit_data = $spend_limit_controller->get_all_spend_limit();
 
 <body>
 <div class="container">
-    <a href="dashboard">
+    <a href="dashboard.php">
         <button>&#x2190; Dashboard</button>
     </a>
     <h1>Set Spending Limits</h1>
