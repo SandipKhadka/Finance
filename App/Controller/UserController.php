@@ -58,7 +58,7 @@ class UserController
         setcookie("userName", "", time() - 3600, "/");
         session_unset();
         session_destroy();
-        header('location: /phpfinance');
+        header('location: /finance');
     }
 }
 
@@ -74,7 +74,7 @@ if (isset($_SESSION['userName']) && isset($_GET['submit']) && $_GET['submit'] ==
 }
 
 if (isset($_SESSION['userName'])) {
-    header('Location: /phpfinance/Public/Markup/dashboard.php');
+    header('Location: /finance/Public/Markup/dashboard.php');
     die;
 }
 

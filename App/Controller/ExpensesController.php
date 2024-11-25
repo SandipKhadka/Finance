@@ -8,7 +8,7 @@ session_start();
 class ExpensesController
 {
 
-    public function add_expenses()git
+    public function add_expenses()
     {
         $amount = htmlspecialchars($_POST['amount']);
         $category_id = htmlspecialchars($_POST['category-id']);
