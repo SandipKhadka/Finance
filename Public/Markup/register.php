@@ -73,7 +73,7 @@ unset($_SESSION['entered-username']);
 </head>
 
 <body>
-    <form action="../../App/Controller/UserController.php" method="post" onsubmit="validateForm(event)">
+    <form action="../../App/Controller/UserController.php" method="post">
         <label for="first-name">First Name:</label>
         <input type="text" id="first-name" name="firstName" placeholder="Enter your first name" value="<?= $first_name; ?>" required />
         <div class="error"></div>
@@ -84,13 +84,15 @@ unset($_SESSION['entered-username']);
 
         <label for="username">Username:</label>
         <input type="text" id="username" name="userName" placeholder="Choose a username" value="<?= $user_name ?>" required />
-        <?php
-        if (isset($_SESSION['username-error'])) {
-            echo "<span>" . $_SESSION['username-error'] . "</span>";
-            unset($_SESSION['username-error']);
-        }
-        ?>
-        <div class="error"></div>
+        <div class="error">
+
+            <?php
+            if (isset($_SESSION['username-error'])) {
+                echo "<span>" . $_SESSION['username-error'] . "</span>";
+                unset($_SESSION['username-error']);
+            }
+            ?>
+        </div>
 
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" placeholder="Enter a password" required />

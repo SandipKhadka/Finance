@@ -16,11 +16,11 @@ class UserController
 
         $user = new UserDB();
         if (!$user->is_username_available($user_name)) {
-            header("location: ../../Public/Markup/register.php");
             $_SESSION['entered-first-name'] = $first_name;
             $_SESSION['entered-last-name'] = $last_name;
             $_SESSION['entered-username'] = $user_name;
             $_SESSION['username-error'] = "Username already taken";
+            header("location: ../../Public/Markup/register.php");
             exit();
         }
         if ($user->register_user($first_name, $last_name, $user_name, $hashed_password)) {
@@ -86,6 +86,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     $user->register_user();
-    exit();
 }
 
