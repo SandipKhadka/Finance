@@ -54,7 +54,7 @@ class DashboardController
 }
 
 if (!isset($_SESSION['userName'])) {
-    header('location: /phpfinance');
+    header('location: /finance');
     die;
 }
 

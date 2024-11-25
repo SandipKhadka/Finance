@@ -84,6 +84,12 @@ unset($_SESSION['entered-username']);
 
         <label for="username">Username:</label>
         <input type="text" id="username" name="userName" placeholder="Choose a username" value="<?= $user_name ?>" required />
+        <?php
+        if (isset($_SESSION['username-error'])) {
+            echo "<span>" . $_SESSION['username-error'] . "</span>";
+            unset($_SESSION['username-error']);
+        }
+        ?>
         <div class="error"></div>
 
         <label for="password">Password:</label>

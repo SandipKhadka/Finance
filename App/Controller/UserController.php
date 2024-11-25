@@ -20,7 +20,7 @@ class UserController
             $_SESSION['entered-first-name'] = $first_name;
             $_SESSION['entered-last-name'] = $last_name;
             $_SESSION['entered-username'] = $user_name;
-            $_SESSION['error'] = "Username already taken";
+            $_SESSION['username-error'] = "Username already taken";
             exit();
         }
         if ($user->register_user($first_name, $last_name, $user_name, $hashed_password)) {

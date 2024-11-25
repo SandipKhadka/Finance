@@ -137,7 +137,7 @@ class ExpensesController
 }
 
 if (!isset($_SESSION['userName'])) {
-    header('location: /phpfinance');
+    header('location: /finance');
     die;
 }
 $expenses = new ExpensesController();
