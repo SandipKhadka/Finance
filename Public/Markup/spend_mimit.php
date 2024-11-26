@@ -32,6 +32,9 @@ $spend_limit_data = $spend_limit_controller->get_all_spend_limit();
             echo "<tr>";
             echo "<td>" . $spend_limit['amount'] . "</td>";
             echo "<td>" . $spend_limit['category_name'] . "</td>";
+            echo "<td>" . $spend_limit['SUM(expenses.expenses_amount)'] . "</td>";
+            $left_limit = $spend_limit['amount'] - $spend_limit['SUM(expenses.expenses_amount)'];
+            echo "<td>" . $left_limit . "</td>";
             echo "</tr>";
         }
         ?>

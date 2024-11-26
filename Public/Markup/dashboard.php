@@ -193,6 +193,8 @@ $dashboard_controller->close_db_connection();
             </a>
             <a href="spend_mimit.php">
                 <button class="dashboard-button">Budget</button>
+            </a><a href="backup.php">
+                <button class="dashboard-button">Backup</button>
             </a>
         </div>
     </div>

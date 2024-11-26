@@ -12,7 +12,8 @@ CREATE TABLE user_details
 CREATE TABLE income_category
 (
     category_id   INT AUTO_INCREMENT PRIMARY KEY,
-    category_name VARCHAR(99), user_id int,
+    category_name VARCHAR(99),
+    user_id       int,
     FOREIGN KEY (user_id) REFERENCES user_details (user_id)
 );
 
@@ -20,8 +21,8 @@ CREATE TABLE expenses_category
 (
     category_id   INT PRIMARY KEY AUTO_INCREMENT,
     category_name VARCHAR(99),
-    user_id int,
-     FOREIGN KEY(user_id) REFERENCES user_details(user_id)
+    user_id       int,
+    FOREIGN KEY (user_id) REFERENCES user_details (user_id)
 );
 
 CREATE TABLE income
@@ -60,3 +61,91 @@ CREATE TABLE spending_limit
     FOREIGN KEY (category_id) REFERENCES expenses_category (category_id),
     FOREIGN KEY (user_id) REFERENCES user_details (user_id)
 );
+
+# income backup table
+CREATE TABLE income_backup
+(
+    income_id       INT PRIMARY KEY AUTO_INCREMENT,
+    income_amount   int,
+    income_category INT,
+    user_id         INT,
+    remarks         varchar(99),
+    date            DATE,
+    time            time(0),
+    FOREIGN KEY (user_id) REFERENCES user_details (user_id),
+    FOREIGN KEY (income_category) REFERENCES income_category (category_id),
+
+    deleted_date    DATE
+);
+
+# trigger to create backup of income if user delete income record then insert into income_backup
+
+DELIMITER $$
+
+CREATE TRIGGER backup_income
+    BEFORE DELETE
+    ON income
+    FOR EACH ROW
+BEGIN
+    INSERT INTO income_backup(income_amount, income_category, user_id, remarks, date, time, deleted_date)
+        VALUE (OLD.income_amount, OLD.income_category, OLD.user_id, OLD.remarks, OLD.date, OLD.time, CURRENT_DATE);
+end $$
+DELIMITER ;
+
+
+# trigger to restore the deleted income transaction
+DELIMITER $$
+
+CREATE TRIGGER restore_income_backup
+    BEFORE DELETE
+    ON income_backup
+    FOR EACH ROW
+BEGIN
+    INSERT INTO income(income_amount, income_category, user_id, remarks, date, time)
+        VALUE (OLD.income_amount, OLD.income_category, OLD.user_id, OLD.remarks, OLD.date, OLD.time);
+end $$
+DELIMITER ;
+
+
+# expenses backup table
+
+CREATE TABLE expenses_backup
+(
+    expenses_id         INT PRIMARY KEY AUTO_INCREMENT,
+    expenses_amount     int,
+    expenses_category INT,
+    user_id           INT,
+    remarks           varchar(99),
+    date              DATE,
+    time              time(0),
+    FOREIGN KEY (user_id) REFERENCES user_details (user_id),
+    FOREIGN KEY (expenses_category) REFERENCES expenses_category (category_id),
+
+    deleted_date      DATE
+);
+
+# trigger to create backup of expenses if user delete income record then insert into expenses_backup
+DELIMITER $$
+
+CREATE TRIGGER backup_expenses
+    BEFORE DELETE
+    ON expenses
+    FOR EACH ROW
+BEGIN
+    INSERT INTO expenses_backup(expenses_amount, expenses_category, user_id, remarks, date, time, deleted_date)
+        VALUE (OLD.expenses_amount, OLD.expenses_category, OLD.user_id, OLD.remarks, OLD.date, OLD.time, CURRENT_DATE);
+end $$
+DELIMITER ;
+
+# trigger to restore the deleted income transaction
+DELIMITER $$
+
+CREATE TRIGGER restore_expenses_backup
+    BEFORE DELETE
+    ON expenses_backup
+    FOR EACH ROW
+BEGIN
+    INSERT INTO expenses(expenses_amount, expenses_category, user_id, remarks, date, time)
+        VALUE (OLD.expenses_amount, OLD.expenses_category, OLD.user_id, OLD.remarks, OLD.date, OLD.time);
+end $$
+DELIMITER ;

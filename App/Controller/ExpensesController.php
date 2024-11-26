@@ -33,7 +33,6 @@ class ExpensesController
         }
 
         $expenses->add_expenses($amount, $category_id,$date, $remarks, $user_name);
-        header("Location: ../../Public/Markup/expenses_transaction.php");
     }
 
     public function add_expenses_category()
@@ -43,7 +42,6 @@ class ExpensesController
         $user_name = $_SESSION['userName']; // Access session variable
         $expenses = new ExpensesDB();
         $expenses->add_expenses_category($category_name, $user_name);
-        header("Location: ../../Public/Markup/expenses_transaction.php");
     }
 
     public function get_expenses_category()
@@ -145,10 +143,14 @@ $expenses = new ExpensesController();
 
 if (isset($_POST['submit']) && $_POST['submit'] == 'add-expenses') {
     $expenses->add_expenses();
+    header("Location: ../../Public/Markup/expenses_transaction.php");
+    exit();
 }
 
 if (isset($_POST['submit']) && $_POST['submit'] == 'add-category') {
     $expenses->add_expenses_category();
+    header("Location: ../../Public/Markup/expenses_transaction.php");
+    exit();
 }
 
 if (isset($_POST['submit']) && $_POST['submit'] == 'filter') {

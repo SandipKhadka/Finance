@@ -47,14 +47,11 @@ class SpendingLimitDB
     public function get_spending_limit($user_name)
     {
         $user_id = $this->get_user_id($user_name);
-        $sql = "SELECT " .
-            "spending_limit." .
-            "amount," .
-            "expenses_category.category_name" .
-            " FROM spending_limit" .
-            " INNER JOIN expenses_category " .
-            "ON spending_limit.category_id = expenses_category.category_id " .
-            "WHERE spending_limit.user_id=? AND YEAR(date)=? AND MONTH(date)=?";
+        $sql = "SELECT spending_limit.amount,expenses_category.category_name, SUM(expenses.expenses_amount)
+                FROM spending_limit 
+                    INNER JOIN expenses_category ON spending_limit.category_id = expenses_category.category_id
+                    INNER JOIN expenses ON spending_limit.category_id = expenses.expenses_category
+                    WHERE spending_limit.user_id = ? AND YEAR(spending_limit.date)= ? and MONTH(spending_limit.date)= ?";
 
         $date = date("Y-m");
         list($year, $month) = explode("-", $date);
