@@ -36,8 +36,10 @@ class BackupController {
 $backup = new BackupController();
 if(isset($_POST['submit']) && $_POST['submit'] == 'income-backup'){
     $backup->restore_income_backup();
+    header ("Location: ../../Public/Markup/backup.php");
 }
 
 if(isset($_POST['submit']) && $_POST['submit'] == 'expenses-backup'){
     $backup->restore_expenses_backup();
+    header ("Location: ../../Public/Markup/backup.php");
 }
