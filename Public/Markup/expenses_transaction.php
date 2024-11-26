@@ -9,7 +9,7 @@ if (isset($_SESSION['transaction'])) {
     $expenses_transaction = $_SESSION['transaction'];
     unset($_SESSION['transaction']);
 } else {
-    $expenses_transaction = $expenses_controller->get_all_expenses_transaction(null, null);
+    $expenses_transaction = $expenses_controller->get_all_expenses_transaction(null, null, null);
 }
 
 
@@ -36,6 +36,8 @@ if (isset($_SESSION['bargraph_data'])) {
 } else {
     $bargraph_data = $expenses_controller->get_bar_graph_data(null, null);
 }
+
+$total_expenses = 0;
 
 $expenses_controller->close_db_connection();
 ?>
@@ -176,15 +178,60 @@ $expenses_controller->close_db_connection();
 </head>
 
 <body>
-    <div class="container">
-        <a href="dashboard.php">
-            <button>&#x2190; Dashboard</button>
-        </a>
-        <div class="ie-form">
+<div class="container">
+    <a href="dashboard.php">
+        <button>&#x2190; Dashboard</button>
+    </a>
+    <div class="ie-form">
+        <form action="../../App/Controller/ExpensesController.php" method="post">
+            <h2>Add New Expense</h2>
+            <input type="number" name="amount" placeholder="Enter amount" required/>
+            <select name="category-id" id="category-id" required>
+                <option selected disabled value="">Select category</option>
+                <?php
+                foreach ($expenses_category as $category) {
+                    echo '<option value="' . $category['category_id'] . '">' . $category['category_name'] . '</option>';
+                }
+                ?>
+            </select>
+            <label for="date">Select date of transaction</label>
+            <input type="date" name="date">
+            <input type="text" name="remarks" placeholder="Enter expenses remarks" required/>
+            <button type="submit" name="submit" value="add-expenses">
+                Add expenses
+            </button>
+        </form>
+
+        <div>
+            <?php
+            if (isset($_SESSION["expenses_error"])) {
+                $error_message = $_SESSION["expenses_error"];
+                echo $error_message;
+                unset($_SESSION['expenses_error']);
+            }
+            ?>
+        </div>
+
+        <form action="../../App/Controller/ExpensesController.php" method="post">
+            <h2>Add Expense Category</h2>
+            <input type="text" name="category-name" placeholder="Enter new category"/>
+            <button type="submit" name="submit" value="add-category">
+                Add Category
+            </button>
+        </form>
+    </div>
+
+    <div class="transactions">
+        <h2>Transactions</h2>
+        <div class="filter-section">
             <form action="../../App/Controller/ExpensesController.php" method="post">
-                <h2>Add New Expense</h2>
-                <input type="number" name="amount" placeholder="Enter amount" required />
-                <select name="category-id" id="category-id" required>
+                <label for="startFilterDate">Start Date:</label>
+                <input type="month" name="startFilterDate"/>
+
+                <label for="endFilterDate">End Date:</label>
+                <input type="month" name="endFilterDate"/>
+
+                <select name="category-id" id="category-id">
                     <option selected disabled value="">Select category</option>
                     <?php
                     foreach ($expenses_category as $category) {
@@ -192,134 +239,103 @@ $expenses_controller->close_db_connection();
                     }
                     ?>
                 </select>
-                <input type="text" name="remarks" placeholder="Enter expenses remarks" required />
-                <button type="submit" name="submit" value="add-expenses">
-                    Add expenses
-                </button>
-            </form>
 
-            <div>
+                <button type="submit" name="submit" value="filter">Filter</button>
+            </form>
+        </div>
+        <div>
+            <span>${updateError}</span>
+        </div>
+        <table class="transactions-table">
+            <tr>
+                <th>Expenses Amount</th>
+                <th>Category</th>
+                <th>Remarks</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Action</th>
+            </tr>
+            <tr>
                 <?php
-                if (isset($_SESSION["expenses_error"])) {
-                    $error_message = $_SESSION["expenses_error"];
-                    echo $error_message;
-                    unset($_SESSION['expenses_error']);
+                foreach ($expenses_transaction as $transaction) {
+                    $total_expenses += $transaction['expenses_amount'];
+                    echo '<form action="../../App/Controller/ExpensesController.php" method="post">';
+                    echo "<tr>";
+                    echo "<td>" .
+                        "<label for='amount" . $transaction['expenses_id'] . "' "
+                        . "id='defaultAmount" . $transaction['expenses_id'] . "'>" . $transaction['expenses_amount'] . "</label>" .
+                        "<input type='number' name='amount' "
+                        . "id='amount-" . $transaction['expenses_id'] . "' "
+                        . "value='" . $transaction['expenses_amount'] . "' hidden/>" .
+                        "</td>";
+
+                    echo "<td>" .
+                        "<span id='defaultCategory" . $transaction['expenses_id'] . "'>" .
+                        $transaction['category_name'] .
+                        "</span>" .
+                        "<select name='categoryId' id='categoryId-" . $transaction['expenses_id'] . "' hidden>" .
+                        "<option selected value='" . $transaction['expenses_category'] . "'>" . $transaction['category_name'] . "</option>";
+
+                    foreach ($expenses_category as $category) {
+                        echo "<option value='" . $category['category_id'] . "'>" . $category['category_name'] . "</option>";
+                    }
+
+                    echo "</select>" .
+                        "</td>";
+
+                    echo "<td>" .
+                        "<label for='remarks" . $transaction['expenses_id'] . "' "
+                        . "id='defaultRemarks" . $transaction['expenses_id'] . "'>"
+                        . $transaction['remarks'] . "</label>" .
+                        "<input type='text' name='remarks' "
+                        . "id='remarks-" . $transaction['expenses_id'] . "' "
+                        . "value='" . $transaction['remarks'] . "' hidden/>" .
+                        "</td>";
+
+                    echo '<td>' . $transaction['date'] . '</td>';
+                    echo '<td>' . $transaction['time'] . '</td>';
+
+                    echo "<td>" .
+                        "<input type='number' "
+                        . "value='" . $transaction['expenses_id'] . "' hidden='hidden' "
+                        . "name='expenses-id' id='id-" . $transaction['expenses_id'] . "'>" .
+                        "<button type='submit' name='submit' "
+                        . "id='delete-" . $transaction['expenses_id'] . "' "
+                        . "value='delete'>Delete now</button>" .
+                        "<button type='button' "
+                        . "id='edit-" . $transaction['expenses_id'] . "' "
+                        . "onclick='edit(" . $transaction['expenses_id'] . ")'>Edit</button>" .
+                        "<button type='submit' name='submit' "
+                        . "id='update-" . $transaction['expenses_id'] . "' "
+                        . "value='update' hidden='hidden'>Update Now</button>" .
+                        "<button type='button' "
+                        . "id='back-" . $transaction['expenses_id'] . "' hidden='hidden' "
+                        . "onclick='back(" . $transaction['expenses_id'] . ")'>Back</button>" .
+                        "</td>";
+
+                    echo "</tr>";
+                    echo "</form>";
                 }
                 ?>
-            </div>
+            </tr>
 
-            <form action="../../App/Controller/ExpensesController.php" method="post">
-                <h2>Add Expense Category</h2>
-                <input type="text" name="category-name" placeholder="Enter new category" />
-                <button type="submit" name="submit" value="add-category">
-                    Add Category
-                </button>
-            </form>
+            <tr>
+                <td><?= $total_expenses ?></td>
+            </tr>
+        </table>
+
+        <h2>Charts</h2>
+        <div class="charts">
+            <div class="chart" id="top-expenses-categories">
+                <!-- Placeholder for Top 5 Expense Categories Chart -->
+            </div>
+            <div class="chart" id="expenses-by-group">
+                <!-- Placeholder for Expense by Category Chart -->
+            </div>
+            <div class="chart" id="expenses-by-day"></div>
         </div>
 
-        <div class="transactions">
-            <h2>Transactions</h2>
-            <div class="filter-section">
-                <form action="../../App/Controller/ExpensesController.php" method="post">
-                    <label for="startFilterDate">Start Date:</label>
-                    <input type="month" name="startFilterDate"
-                        value="<?= isset($_POST['startFilterDate']) ? $_POST['startFilterDate'] : '' ?>" />
-
-                    <label for="endFilterDate">End Date:</label>
-                    <input type="month" name="endFilterDate"
-                        value="<?= isset($_POST['endFilterDate']) ? $_POST['endFilterDate'] : '' ?>" />
-
-                    <button type="submit" name="submit" value="filter">Filter</button>
-                </form>
-            </div>
-            <div>
-                <span>${updateError}</span>
-            </div>
-            <table class="transactions-table">
-                <tr>
-                    <th>Expenses Amount</th>
-                    <th>Category</th>
-                    <th>Remarks</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Action</th>
-                </tr>
-                <tr>
-                    <?php
-                    foreach ($expenses_transaction as $transaction) {
-                        echo '<form action="../../App/Controller/ExpensesController.php" method="post">';
-                        echo "<tr>";
-                        echo "<td>" .
-                            "<label for='amount" . $transaction['expenses_id'] . "' "
-                            . "id='defaultAmount" . $transaction['expenses_id'] . "'>" . $transaction['expenses_amount'] . "</label>" .
-                            "<input type='number' name='amount' "
-                            . "id='amount-" . $transaction['expenses_id'] . "' "
-                            . "value='" . $transaction['expenses_amount'] . "' hidden/>" .
-                            "</td>";
-
-                        echo "<td>" .
-                            "<span id='defaultCategory" . $transaction['expenses_id'] . "'>" .
-                            $transaction['category_name'] .
-                            "</span>" .
-                            "<select name='categoryId' id='categoryId-" . $transaction['expenses_id'] . "' hidden>" .
-                            "<option selected value='" . $transaction['expenses_category'] . "'>" . $transaction['category_name'] . "</option>";
-
-                        foreach ($expenses_category as $category) {
-                            echo "<option value='" . $category['category_id'] . "'>" . $category['category_name'] . "</option>";
-                        }
-
-                        echo "</select>" .
-                            "</td>";
-
-                        echo "<td>" .
-                            "<label for='remarks" . $transaction['expenses_id'] . "' "
-                            . "id='defaultRemarks" . $transaction['expenses_id'] . "'>"
-                            . $transaction['remarks'] . "</label>" .
-                            "<input type='text' name='remarks' "
-                            . "id='remarks-" . $transaction['expenses_id'] . "' "
-                            . "value='" . $transaction['remarks'] . "' hidden/>" .
-                            "</td>";
-
-                        echo '<td>' . $transaction['date'] . '</td>';
-                        echo '<td>' . $transaction['time'] . '</td>';
-
-                        echo "<td>" .
-                            "<input type='number' "
-                            . "value='" . $transaction['expenses_id'] . "' hidden='hidden' "
-                            . "name='expenses-id' id='id-" . $transaction['expenses_id'] . "'>" .
-                            "<button type='submit' name='submit' "
-                            . "id='delete-" . $transaction['expenses_id'] . "' "
-                            . "value='delete'>Delete now</button>" .
-                            "<button type='button' "
-                            . "id='edit-" . $transaction['expenses_id'] . "' "
-                            . "onclick='edit(" . $transaction['expenses_id'] . ")'>Edit</button>" .
-                            "<button type='submit' name='submit' "
-                            . "id='update-" . $transaction['expenses_id'] . "' "
-                            . "value='update' hidden='hidden'>Update Now</button>" .
-                            "<button type='button' "
-                            . "id='back-" . $transaction['expenses_id'] . "' hidden='hidden' "
-                            . "onclick='back(" . $transaction['expenses_id'] . ")'>Back</button>" .
-                            "</td>";
-
-                        echo "</tr>";
-                        echo "</form>";
-                    }
-                    ?>
-                </tr>
-            </table>
-
-            <h2>Charts</h2>
-            <div class="charts">
-                <div class="chart" id="top-expenses-categories">
-                    <!-- Placeholder for Top 5 Expense Categories Chart -->
-                </div>
-                <div class="chart" id="expenses-by-group">
-                    <!-- Placeholder for Expense by Category Chart -->
-                </div>
-                <div class="chart" id="expenses-by-day"></div>
-            </div>
-
-        </div>
+    </div>
 </body>
 
 </html>

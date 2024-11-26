@@ -13,6 +13,7 @@ class ExpensesController
         $amount = htmlspecialchars($_POST['amount']);
         $category_id = htmlspecialchars($_POST['category-id']);
         $remarks = htmlspecialchars($_POST['remarks']);
+        $date = isset($_POST['date']) ? htmlspecialchars($_POST['date']) : date('Y-m-d');
 
         $user_name = $_SESSION['userName'];
 
@@ -31,7 +32,7 @@ class ExpensesController
             }
         }
 
-        $expenses->add_expenses($amount, $category_id, $remarks, $user_name);
+        $expenses->add_expenses($amount, $category_id,$date, $remarks, $user_name);
         header("Location: ../../Public/Markup/expenses_transaction.php");
     }
 
@@ -53,7 +54,7 @@ class ExpensesController
         return $expenses->get_expenses_category($user_name);
     }
 
-    public function get_all_expenses_transaction($start_filter_date, $end_filter_date)
+    public function get_all_expenses_transaction($start_filter_date, $end_filter_date, $expenses_category)
     {
         $user_name = $_SESSION['userName']; // Access session variable
         if ($start_filter_date == null) {
@@ -61,7 +62,7 @@ class ExpensesController
         }
         $expenses = new ExpensesDB();
 
-        return $expenses->get_all_expenses_transaction($user_name, $start_filter_date, $end_filter_date);
+        return $expenses->get_all_expenses_transaction($user_name, $start_filter_date, $end_filter_date, $expenses_category);
     }
 
     public function delete_expenses_transaction()
@@ -151,10 +152,11 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'add-category') {
 }
 
 if (isset($_POST['submit']) && $_POST['submit'] == 'filter') {
-    $start_filter_date = isset($_POzST['startFilterDate']) ? $_POST['startFilterDate'] : null;
+    $start_filter_date = isset($_POST['startFilterDate']) ? $_POST['startFilterDate'] : null;
     $end_filter_date = isset($_POST['endFilterDate']) ? $_POST['endFilterDate'] : null;
+    $expense_category = isset($_POST['category-id']) ? $_POST['category-id'] : null;
 
-    $transaction = $expenses->get_all_expenses_transaction($start_filter_date, $end_filter_date);
+    $transaction = $expenses->get_all_expenses_transaction($start_filter_date, $end_filter_date,$expense_category);
     $pie_chart_data = $expenses->get_pie_chart_data($start_filter_date, $end_filter_date);
     $line_graph_data = $expenses->get_line_chart($start_filter_date, $end_filter_date);
     $bar_graph_data = $expenses->get_bar_graph_data($start_filter_date, $end_filter_date);

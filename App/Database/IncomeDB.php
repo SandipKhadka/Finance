@@ -12,15 +12,15 @@ class IncomeDB
     }
 
 
-    public function add_income($amount, $category_id, $remarks, $user_name)
+    public function add_income($amount, $category_id, $date, $remarks, $user_name)
     {
         $sql = "INSERT INTO income(income_amount, income_category, user_id, remarks, date, time) " .
-            "VALUES(?,?,?,?,CURDATE(),CURTIME())";
+            "VALUES(?,?,?,?,?,CURTIME())";
         $user_id = $this->get_user_id($user_name);
 
         $statement = mysqli_stmt_init($this->connection);
         if (mysqli_stmt_prepare($statement, $sql)) {
-            mysqli_stmt_bind_param($statement, "iiis", $amount, $category_id, $user_id, $remarks);
+            mysqli_stmt_bind_param($statement, "iiiss", $amount, $category_id, $user_id, $remarks, $date);
             mysqli_stmt_execute($statement);
         }
     }
@@ -96,39 +96,54 @@ class IncomeDB
         return null;
     }
 
-    public function get_all_income_transaction($user_name, $start_filter_date, $end_filter_date)
+    public function get_all_income_transaction($user_name, $start_filter_date, $end_filter_date, $income_category)
     {
         $user_id = $this->get_user_id($user_name);
         $data = [];
 
-        $sql = "SELECT " .
-            "income_id, income_amount," .
-            "category_name,remarks" .
-            ",date," .
-            "time , " .
-            "income.income_category " .
-            "FROM income " .
-            "INNER JOIN income_category " .
-            "ON income.income_category=income_category.category_id " .
-            "WHERE (income.user_id =? AND YEAR(date) >=? AND MONTH(date) >=? AND YEAR(date) <=? AND MONTH(date) <=?)" .
-            "OR (income.user_id=? AND YEAR(date)=? AND MONTH(date)=?)";
-        $statement = mysqli_stmt_init($this->connection);
-        list($start_filter_year, $start_filter_month) = explode('-', $start_filter_date);
-        if ($end_filter_date != NULL) {
-            list($end_filter_year, $end_filter_month) = explode('-', $end_filter_date);
+        $start_year_month = date('Y-m', strtotime($start_filter_date));
+        echo $start_year_month;
+
+        if ($end_filter_date == null) {
+            $end_year_month = $start_year_month;
+        } else {
+            $end_year_month = date('Y-m', strtotime($end_filter_date));
         }
+
+        $sql = "SELECT 
+            income_id, income_amount, 
+            category_name, remarks, 
+            date, time, 
+            income.income_category 
+        FROM income 
+        INNER JOIN income_category 
+        ON income.income_category = income_category.category_id 
+        WHERE income.user_id = ? 
+        AND DATE_FORMAT(date, '%Y-%m') BETWEEN ? AND ? ";
+
+        if ($income_category != null) {
+            $sql .= " AND income.income_category = ?";
+        }
+
+        $statement = mysqli_stmt_init($this->connection);
+
         if (mysqli_stmt_prepare($statement, $sql)) {
-            mysqli_stmt_bind_param($statement, "iiiiiiii",
-                $user_id, $start_filter_year, $start_filter_month,
-                $end_filter_year, $end_filter_month,
-                $user_id, $start_filter_year, $start_filter_month);
+            if ($income_category != null) {
+                mysqli_stmt_bind_param($statement, "issi", $user_id, $start_year_month, $end_year_month, $income_category);
+            } else {
+                mysqli_stmt_bind_param($statement, "iss", $user_id, $start_year_month, $end_year_month);
+            }
+
             mysqli_stmt_execute($statement);
             $result = mysqli_stmt_get_result($statement);
+
             while ($row = mysqli_fetch_assoc($result)) {
                 $data[] = $row;
             }
+
             return $data;
         }
+
         return null;
     }
 

@@ -11,10 +11,11 @@ class IncomeController
         $amount = htmlspecialchars($_POST['amount']);
         $category_id = htmlspecialchars($_POST['category-id']);
         $remarks = htmlspecialchars($_POST['remarks']);
+        $date = isset($_POST['date']) ? htmlspecialchars($_POST['date']) : date('Y-m-d');
 
         $user_name = $_SESSION['userName']; // Access session variable
         $income = new IncomeDB();
-        $income->add_income($amount, $category_id, $remarks, $user_name);
+        $income->add_income($amount, $category_id,$date, $remarks, $user_name);
         header("Location: ../../Public/Markup/income_transaction.php");
     }
 
@@ -36,7 +37,7 @@ class IncomeController
         return $income->get_income_category($user_name);
     }
 
-    public function get_all_income_transaction($start_filter_date, $end_filter_date)
+    public function get_all_income_transaction($start_filter_date, $end_filter_date,$income_category)
     {
         $user_name = $_SESSION['userName']; // Access session variable
         if ($start_filter_date == null) {
@@ -44,7 +45,7 @@ class IncomeController
         }
         $income = new IncomeDB();
 
-        return $income->get_all_income_transaction($user_name, $start_filter_date, $end_filter_date);
+        return $income->get_all_income_transaction($user_name, $start_filter_date, $end_filter_date,$income_category);
     }
 
     public function get_pie_chart_data($start_filter_date, $end_filter_date)
@@ -110,7 +111,7 @@ class IncomeController
 }
 
 if (!isset($_SESSION['userName'])) {
-    header('location: /phpfinance');
+    header('location: /finance');
     die;
 }
 $income = new IncomeController();
@@ -126,7 +127,9 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'add-category') {
 if (isset($_POST['submit']) && $_POST['submit'] == 'filter') {
     $start_filter_date = isset($_POST['startFilterDate']) ? $_POST['startFilterDate'] : null;
     $end_filter_date = isset($_POST['endFilterDate']) ? $_POST['endFilterDate'] : null;
-    $transaction = $income->get_all_income_transaction($start_filter_date, $end_filter_date);
+    $income_category = isset($_POST['category-id']) ? $_POST['category-id'] : null;
+
+    $transaction = $income->get_all_income_transaction($start_filter_date, $end_filter_date,$income_category);
     $pie_chart_data = $income->get_pie_chart_data($start_filter_date, $end_filter_date);
     $line_graph_data = $income->get_line_chart($start_filter_date, $end_filter_date);
     $bar_graph_data = $income->get_bar_graph_data($start_filter_date, $end_filter_date);

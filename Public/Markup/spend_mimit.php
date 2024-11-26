@@ -24,6 +24,8 @@ $spend_limit_data = $spend_limit_controller->get_all_spend_limit();
         <tr>
             <th>Limit</th>
             <th>Category</th>
+            <th>Current Spend</th>
+            <th>Left Spend</th>
         </tr>
         <?php
         foreach ($spend_limit_data as $spend_limit) {
