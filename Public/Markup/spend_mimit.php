@@ -4,6 +4,7 @@ $spend_limit_controller = new SpendLimitController();
 $expenses_category = $spend_limit_controller->get_expenses_category();
 
 $spend_limit_data = $spend_limit_controller->get_all_spend_limit();
+$spend_limit_controller->close_db_connection();
 ?>
 <!DOCTYPE html>
 <html lang="en">

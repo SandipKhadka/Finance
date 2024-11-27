@@ -31,6 +31,11 @@ class SpendLimitController
         $spend_limit_data = $spend_limit_db->get_spending_limit($user_name);
         return $spend_limit_data;
     }
+
+    public function close_db_connection()
+    {
+        DBConnection::close_connection();
+    }
 }
 
 if (!isset($_SESSION['userName'])) {

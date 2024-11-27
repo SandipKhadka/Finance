@@ -1,7 +1,9 @@
 <?php
 require_once __DIR__ . '/../Database/BackupDB.php';
 session_start();
-class BackupController {
+
+class BackupController
+{
     public function get_income_backup()
     {
         $user_name = $_SESSION['userName'];
@@ -31,15 +33,25 @@ class BackupController {
         $expenses_id = $_POST['expenses-id'];
         $backup->backup_expenses_record($expenses_id);
     }
+
+    public function close_db_connection()
+    {
+        DBConnection::close_connection();
+    }
+}
+
+if (!isset($_SESSION['userName'])) {
+    header('location: /finance');
+    die;
 }
 
 $backup = new BackupController();
-if(isset($_POST['submit']) && $_POST['submit'] == 'income-backup'){
+if (isset($_POST['submit']) && $_POST['submit'] == 'income-backup') {
     $backup->restore_income_backup();
-    header ("Location: ../../Public/Markup/backup.php");
+    header("Location: ../../Public/Markup/backup.php");
 }
 
-if(isset($_POST['submit']) && $_POST['submit'] == 'expenses-backup'){
+if (isset($_POST['submit']) && $_POST['submit'] == 'expenses-backup') {
     $backup->restore_expenses_backup();
-    header ("Location: ../../Public/Markup/backup.php");
+    header("Location: ../../Public/Markup/backup.php");
 }
