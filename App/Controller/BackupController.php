@@ -8,30 +8,30 @@ class BackupController
     {
         $user_name = $_SESSION['userName'];
         $backup = new BackupDB();
-        $income_backup = $backup->get_income_backup_data($user_name);
-        return $income_backup;
+        $backup_data = $backup->get_income_backup_data($user_name);
+        return $backup_data;
     }
 
     public function restore_income_backup()
     {
         $backup = new BackupDB();
-        $income_id = $_POST['income-id'];
-        $backup->backup_income_record($income_id);
+        $backup_id = $_POST['backup-id'];
+        $backup->backup_income_record($backup_id);
     }
 
     public function get_expenses_backup()
     {
         $user_name = $_SESSION['userName'];
         $backup = new BackupDB();
-        $expenses_backup = $backup->get_expenses_backup_data($user_name);
-        return $expenses_backup;
+        $backup_data = $backup->get_expenses_backup_data($user_name);
+        return $backup_data;
     }
 
     public function restore_expenses_backup()
     {
         $backup = new BackupDB();
-        $expenses_id = $_POST['expenses-id'];
-        $backup->backup_expenses_record($expenses_id);
+        $backup_id = $_POST['backup-id'];
+        $backup->backup_expenses_record($backup_id);
     }
 
     public function close_db_connection()

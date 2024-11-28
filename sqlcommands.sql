@@ -65,13 +65,14 @@ CREATE TABLE spending_limit
 # income backup table
 CREATE TABLE income_backup
 (
-    income_id       INT PRIMARY KEY AUTO_INCREMENT,
+    backup_id       INT PRIMARY KEY AUTO_INCREMENT,
     income_amount   int,
     income_category INT,
     user_id         INT,
     remarks         varchar(99),
     date            DATE,
     time            time(0),
+    income_id       INT,
     FOREIGN KEY (user_id) REFERENCES user_details (user_id),
     FOREIGN KEY (income_category) REFERENCES income_category (category_id),
 
@@ -87,8 +88,8 @@ CREATE TRIGGER backup_income
     ON income
     FOR EACH ROW
 BEGIN
-    INSERT INTO income_backup(income_amount, income_category, user_id, remarks, date, time, deleted_date)
-        VALUE (OLD.income_amount, OLD.income_category, OLD.user_id, OLD.remarks, OLD.date, OLD.time, CURRENT_DATE);
+    INSERT INTO income_backup(income_id,income_amount, income_category, user_id, remarks, date, time, deleted_date)
+        VALUE (OLD.income_id,OLD.income_amount, OLD.income_category, OLD.user_id, OLD.remarks, OLD.date, OLD.time, CURRENT_DATE);
 end $$
 DELIMITER ;
 
@@ -101,8 +102,8 @@ CREATE TRIGGER restore_income_backup
     ON income_backup
     FOR EACH ROW
 BEGIN
-    INSERT INTO income(income_amount, income_category, user_id, remarks, date, time)
-        VALUE (OLD.income_amount, OLD.income_category, OLD.user_id, OLD.remarks, OLD.date, OLD.time);
+    INSERT INTO income(income.income_id,income_amount, income_category, user_id, remarks, date, time)
+        VALUE (OLD.income_id,OLD.income_amount, OLD.income_category, OLD.user_id, OLD.remarks, OLD.date, OLD.time);
 end $$
 DELIMITER ;
 
@@ -111,13 +112,14 @@ DELIMITER ;
 
 CREATE TABLE expenses_backup
 (
-    expenses_id         INT PRIMARY KEY AUTO_INCREMENT,
-    expenses_amount     int,
+    backup_id         INT PRIMARY KEY AUTO_INCREMENT,
+    expenses_amount   int,
     expenses_category INT,
     user_id           INT,
     remarks           varchar(99),
     date              DATE,
     time              time(0),
+    expenses_id         INT,
     FOREIGN KEY (user_id) REFERENCES user_details (user_id),
     FOREIGN KEY (expenses_category) REFERENCES expenses_category (category_id),
 
@@ -132,8 +134,8 @@ CREATE TRIGGER backup_expenses
     ON expenses
     FOR EACH ROW
 BEGIN
-    INSERT INTO expenses_backup(expenses_amount, expenses_category, user_id, remarks, date, time, deleted_date)
-        VALUE (OLD.expenses_amount, OLD.expenses_category, OLD.user_id, OLD.remarks, OLD.date, OLD.time, CURRENT_DATE);
+    INSERT INTO expenses_backup(expenses_id,expenses_amount, expenses_category, user_id, remarks, date, time, deleted_date)
+        VALUE (OLD.expenses_id,OLD.expenses_amount, OLD.expenses_category, OLD.user_id, OLD.remarks, OLD.date, OLD.time, CURRENT_DATE);
 end $$
 DELIMITER ;
 
@@ -145,7 +147,7 @@ CREATE TRIGGER restore_expenses_backup
     ON expenses_backup
     FOR EACH ROW
 BEGIN
-    INSERT INTO expenses(expenses_amount, expenses_category, user_id, remarks, date, time)
-        VALUE (OLD.expenses_amount, OLD.expenses_category, OLD.user_id, OLD.remarks, OLD.date, OLD.time);
+    INSERT INTO expenses(expenses_id,expenses_amount, expenses_category, user_id, remarks, date, time)
+        VALUE (OLD.expenses_id,OLD.expenses_amount, OLD.expenses_category, OLD.user_id, OLD.remarks, OLD.date, OLD.time);
 end $$
 DELIMITER ;

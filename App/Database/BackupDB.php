@@ -14,7 +14,7 @@ class BackupDB
     public function get_income_backup_data($user_name)
     {
         $user_id = $this->get_user_id($user_name);
-        $sql = "SELECT income_id, income_category.category_name, income_amount,remarks,date,time  FROM income_backup
+        $sql = "SELECT backup_id, income_id, income_category.category_name, income_amount,remarks,date,time  FROM income_backup
                 INNER JOIN income_category ON income_backup.income_category = income_category.category_id
                     WHERE income_backup.user_id=?";
         $data = [];
@@ -47,12 +47,12 @@ class BackupDB
         return null;
     }
 
-    public function backup_income_record($income_id)
+    public function backup_income_record($backup_id)
     {
-        $sql = "DELETE FROM income_backup WHERE income_id=?";
+        $sql = "DELETE FROM income_backup WHERE backup_id= ? ";
         $statement = mysqli_stmt_init($this->connection);
         if (mysqli_stmt_prepare($statement, $sql)) {
-            mysqli_stmt_bind_param($statement, "i", $income_id);
+            mysqli_stmt_bind_param($statement, "i", $backup_id);
             mysqli_stmt_execute($statement);
         }
     }
@@ -60,7 +60,7 @@ class BackupDB
     public function get_expenses_backup_data($user_name)
     {
         $user_id = $this->get_user_id($user_name);
-        $sql = "SELECT expenses_id, expenses_category.category_name, expenses_amount,remarks,date,time  FROM expenses_backup
+        $sql = "SELECT backup_id, expenses_id, expenses_category.category_name, expenses_amount,remarks,date,time  FROM expenses_backup
                 INNER JOIN expenses_category ON expenses_backup.expenses_category = expenses_category.category_id
                     WHERE expenses_backup.user_id=?";
         $data = [];
@@ -79,7 +79,7 @@ class BackupDB
 
     public function backup_expenses_record($expenses_id)
     {
-        $sql = "DELETE FROM expenses_backup WHERE expenses_id=?";
+        $sql = "DELETE FROM expenses_backup WHERE backup_id=?";
         $statement = mysqli_stmt_init($this->connection);
         if (mysqli_stmt_prepare($statement, $sql)) {
             mysqli_stmt_bind_param($statement, "i", $expenses_id);

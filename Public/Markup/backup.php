@@ -39,7 +39,7 @@ $backup->close_db_connection();
             echo "<td>";
 
             echo "<form method='post' action='../../App/Controller/BackupController.php'>";
-            echo "<input type='number' value='" . $income['income_id'] . "' name='income-id' hidden>";
+            echo "<input type='number' value='" . $income['backup_id'] . "' name='backup-id' hidden>";
             echo "<button type='submit' name='submit' value='income-backup'>Backup Now</button>";
             echo "</form>";
             echo "</td>";
@@ -75,7 +75,7 @@ $backup->close_db_connection();
             echo "<td>";
 
             echo "<form method='post' action='../../App/Controller/BackupController.php'>";
-            echo "<input type='number' value='" . $expenses['expenses_id'] . "' name='expenses-id' hidden>";
+            echo "<input type='number' value='" . $expenses['backup_id'] . "' name='backup-id' hidden>";
             echo "<button type='submit' name='submit' value='expenses-backup'>Backup Now</button>";
             echo "</form>";
             echo "</td>";
