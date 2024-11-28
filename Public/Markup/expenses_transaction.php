@@ -248,7 +248,7 @@ $expenses_controller->close_db_connection();
                     name="date"
                     id="transacion-date"
                     class="date-picker"
-                    required />
+                     />
 
                 <input
                     type="text"
@@ -260,11 +260,11 @@ $expenses_controller->close_db_connection();
                 </button>
             </form>
 
-            <div>
+            <div class="error">
                 <?php
                 if (isset($_SESSION["expenses_error"])) {
                     $error_message = $_SESSION["expenses_error"];
-                    echo $error_message;
+                    echo "<span>".$error_message."</span>";
                     unset($_SESSION['expenses_error']);
                 }
                 ?>

@@ -13,7 +13,7 @@ class ExpensesController
         $amount = htmlspecialchars($_POST['amount']);
         $category_id = htmlspecialchars($_POST['category-id']);
         $remarks = htmlspecialchars($_POST['remarks']);
-        $date = isset($_POST['date']) ? htmlspecialchars($_POST['date']) : date('Y-m-d');
+        $date = isset($_POST['date']) && !empty($_POST['date']) ? $_POST['date'] : date('Y-m-d');
 
         $user_name = $_SESSION['userName'];
 

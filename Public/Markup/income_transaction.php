@@ -253,7 +253,7 @@ $incomeController->close_db_connection();
                     name="date"
                     id="transacion-date"
                     class="date-picker"
-                    required />
+                />
 
                 <input
                     required
