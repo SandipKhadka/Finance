@@ -12,6 +12,7 @@ unset($_SESSION['entered-confirm-password']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../CSS/dashboard.css">
     <title>Change Password</title>
     <script>
         function validateForm(event) {
@@ -45,7 +46,10 @@ unset($_SESSION['entered-confirm-password']);
     </script>
 </head>
 <body>
-<form action="../../App/Controller/UserController.php" method="post" onsubmit="validateForm(event)">
+    <div class="main-container">
+        <div class="budget-container">
+            <h2>Set New Password</h2>
+<form action="../../App/Controller/UserController.php" method="post" onsubmit="validateForm(event)" class="form-container">
     <div>
         <input type="password" name="previousPassword" placeholder="Enter old password" value="<?=$previous_password?>" id="previous-pass">
         <div id="previousPasswordError" class="error"></div>
@@ -77,5 +81,7 @@ unset($_SESSION['entered-confirm-password']);
         <button type="submit" name="submit" value="changePassword">Change Password</button>
     </div>
 </form>
+</div>
+</div>
 </body>
 </html>
