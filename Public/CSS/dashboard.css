@@ -1,5 +1,5 @@
 body {
-	background-color: #ffffff;
+	background-color: #f5f5f5;
 	color: #e6e6e6;
 	font-family: Arial, sans-serif;
 	margin: 0;
@@ -9,10 +9,6 @@ body {
 .container {
 	max-width: 1200px;
 	margin: 0 auto;
-}
-
-#logout {
-	color: white;
 }
 
 h1,
@@ -25,16 +21,70 @@ h2 {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background-color: #f1eeee;
+	background-color: #e6e6e6;
 	padding: 10px 20px;
 	margin-bottom: 20px;
+}
+
+.profile-container {
+	position: relative;
+	display: inline-block;
+}
+
+.profile-icon {
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+}
+
+.profile-img {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	right: 0;
+	top: 50px;
+	background-color: #ffffff;
+	min-width: 150px;
+	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.dropdown-content a {
+	color: #2273dd;
+	padding: 10px 15px;
+	text-decoration: none;
+	display: block;
+	font-size: 14px;
+}
+
+.dropdown-content a:hover {
+	background-color: #f1f1f1;
+}
+
+.show {
+	display: block;
+}
+
+#logout,
+#change-password {
+	color: white;
 }
 
 .buttoncontainer {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-bottom: 10px;
 }
 
 .buttons {
@@ -50,6 +100,7 @@ button {
 	cursor: pointer;
 	border-radius: 5px;
 	margin-right: 10px;
+	text-decoration: none;
 }
 
 .dashboard-button {
@@ -58,62 +109,6 @@ button {
 	width: 130px;
 	font-size: 18px;
 }
-
-.add-button {
-	position: relative;
-}
-
-.add-options {
-	display: none;
-	position: absolute;
-	top: 40px;
-	left: 0;
-	background-color: #333;
-	border: 1px solid #f5a623;
-	border-radius: 5px;
-	overflow: hidden;
-}
-
-.add-options a {
-	display: block;
-	padding: 10px 20px;
-	color: #e6e6e6;
-	text-decoration: none;
-}
-
-.add-options a:hover {
-	background-color: #f5a623;
-	color: #333;
-}
-
-.user-greeting {
-	position: relative;
-	cursor: pointer;
-}
-
-.user-options {
-	display: none;
-	position: absolute;
-	top: 30px;
-	right: 0;
-	background-color: #333;
-	border: 1px solid #f5a623;
-	border-radius: 5px;
-	overflow: hidden;
-}
-
-.user-options a {
-	display: block;
-	padding: 10px 20px;
-	color: #e6e6e6;
-	text-decoration: none;
-}
-
-.user-options a:hover {
-	background-color: #f5a623;
-	color: #333;
-}
-
 .summary {
 	display: flex;
 	justify-content: space-around;
@@ -121,7 +116,7 @@ button {
 }
 
 .summary-item {
-	background-color: #b4b2b2;
+	background-color: #e0e0e0;
 	padding: 20px;
 	border-radius: 10px;
 	text-align: center;
@@ -165,94 +160,4 @@ button {
 	position: relative;
 
 	margin-bottom: 20px;
-}
-
-.ie-form {
-	margin-bottom: 20px;
-}
-
-.ie-form form input[type="number"],
-.ie-form form input[type="text"],
-.ie-form form select {
-	width: calc(100% - 20px);
-	margin-bottom: 10px;
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-}
-
-.ie-form form button[type="submit"] {
-	background-color: #2273dd;
-	border: none;
-	color: #ffffff;
-	padding: 10px 15px;
-	cursor: pointer;
-	border-radius: 5px;
-}
-
-.ie-form form button[type="submit"]:hover {
-	background-color: #4a90ec;
-}
-
-.chart h2 {
-	color: #f5a623;
-	text-align: center;
-	margin-bottom: 10px;
-}
-
-.filter-section {
-	margin-bottom: 20px;
-	padding: 20px;
-	background-color: #e6e6e6;
-	border-radius: 10px;
-	color: black;
-}
-
-.filter-section form {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-}
-
-.entry {
-	border-style: solid;
-}
-
-.filter-section form input[type="month"],
-.filter-section form button[type="submit"] {
-	background-color: #2273dd;
-	border: none;
-	color: #ffffff;
-	padding: 10px;
-	cursor: pointer;
-	border-radius: 5px;
-	margin-right: 20px;
-}
-
-.transactions-table {
-	width: 100%;
-	border-collapse: collapse;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	background-color: #555555;
-}
-
-.transactions-table th,
-.transactions-table td {
-	padding: 10px;
-	border: 1px solid #6decaf;
-	text-align: left;
-}
-
-.transactions-table th {
-	background-color: #333;
-	color: #6decaf;
-}
-
-.transactions-table tr:nth-child(even) {
-	background-color: #444;
-}
-
-.transactions-table tr:hover {
-	background-color: #555;
 }

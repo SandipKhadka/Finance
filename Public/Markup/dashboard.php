@@ -41,15 +41,16 @@ $dashboard_controller->close_db_connection();
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Expense Trend Dashboard</title>
-    <link rel="stylesheet" href="../CSS/dashboard.css"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../CSS/dashboard.css" />
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-
     <script type="text/javascript">
-        google.charts.load("current", {packages: ["corechart"]});
+        google.charts.load("current", {
+            packages: ["corechart"]
+        });
 
         google.charts.setOnLoadCallback(drawChart);
 
@@ -90,7 +91,9 @@ $dashboard_controller->close_db_connection();
     </script>
 
     <script type="text/javascript">
-        google.charts.load("current", {packages: ["line"]});
+        google.charts.load("current", {
+            packages: ["line"]
+        });
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
@@ -125,13 +128,17 @@ $dashboard_controller->close_db_connection();
     </script>
 
     <script type="text/javascript">
-        google.charts.load("current", {packages: ["corechart"]});
+        google.charts.load("current", {
+            packages: ["corechart"]
+        });
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
             // Start with a static header row for the chart
             var data = google.visualization.arrayToDataTable([
-                ["Category Name", "TotalSpend", {role: "style"}]
+                ["Category Name", "TotalSpend", {
+                    role: "style"
+                }]
                 <?php
 
                 foreach ($bargraph_data as $bar) {
@@ -145,11 +152,18 @@ $dashboard_controller->close_db_connection();
 
             var options = {
                 title: "Expenses By Category",
-                titleTextStyle: {color: 'black', bold: true},
+                titleTextStyle: {
+                    color: 'black',
+                    bold: true
+                },
                 width: 600,
                 height: 400,
-                bar: {groupWidth: "95%"},
-                legend: {position: "none"},
+                bar: {
+                    groupWidth: "95%"
+                },
+                legend: {
+                    position: "none"
+                },
                 backgroundColor: "#e6e6e6",
             };
 
@@ -161,62 +175,95 @@ $dashboard_controller->close_db_connection();
 </head>
 
 <body>
-<div class="container">
-    <button>
-        <a href="../../App/Controller/UserController.php?submit=logout" id="logout">Log out</a>
-    </button>
-    <button>
-    <a href="change_password.php">Change Password</a>
-    </button>
-    <h1>BudgetBuddy</h1>
+    <div class="header-bar">
+        <h1>BudgetBuddy</h1>
 
-    <div class="summary">
-        <div class="summary-item">
-            <div class="summary-title">Income</div>
-            <div class="summary-value">Rs . <?php echo $income ?></div>
+        <div class="buttoncontainer">
+            <div class="buttons">
+                <a href="income_transaction.php">
+                    <button class="dashboard-button">Income</button>
+                </a>
+                <a href="expenses_transaction.php">
+                    <button class="dashboard-button">Expenses</button>
+                </a>
+                <a href="spend_mimit.php">
+                    <button class="dashboard-button">Budget</button>
+                </a><a href="backup.php">
+                    <button class="dashboard-button">Backup</button>
+                </a>
+            </div>
         </div>
-        <div class="summary-item">
-            <div class="summary-title">Expenses</div>
-            <div class="summary-value">Rs . <?php echo $expenses ?></div>
-        </div>
-        <div class="summary-item">
-            <div class="summary-title">Net Income</div>
-            <div class="summary-value">Rs . <?php echo $net_income ?></div>
 
+        <div class="profile-container">
+            <div onclick="toggleDropdown()" class="profile-icon"> &#9679;
+                <img src="../icons/user-icon.png" alt="User Profile" class="profile-img">
+            </div>
+            <div id="profile-dropdown" class="dropdown-content">
+                <a href="../../App/Controller/UserController.php?submit=logout">Logout</a>
+                <a href="change_password.php">Change Password</a>
+            </div>
+        </div>
+
+        <script>
+            function toggleDropdown() {
+                document.getElementById('profile-dropdown').classList.toggle('show');
+            }
+
+            window.onclick = function(event) {
+                if (!event.target.matches('.profile-icon')) {
+                    var dropdown = document.getElementsByClassName('dropdown-content');
+                    var i;
+                    for (i = 0; i < dropdown.length; i++) {
+                        var openDropdown = dropdown[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+            };
+        </script>
+    </div>
+
+
+    <div class="container">
+        <!-- <button>
+            <a href="../../App/Controller/UserController.php?submit=logout" class="buttons" id="logout">Log out</a>
+        </button>
+        <button>
+            <a href="change_password.php" class="buttons" id="change-password">Change Password</a>
+        </button>
+        <h1>BudgetBuddy</h1> -->
+
+
+
+        <div class="summary">
+            <div class="summary-item">
+                <div class="summary-title">Income</div>
+                <div class="summary-value">Rs . <?php echo $income ?></div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-title">Expenses</div>
+                <div class="summary-value">Rs . <?php echo $expenses ?></div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-title">Net Income</div>
+                <div class="summary-value">Rs . <?php echo $net_income ?></div>
+
+            </div>
+        </div>
+
+        <div class="charts">
+            <div class="chart" id="expenses-by-group">
+                <!-- Placeholder for Pie Chart -->
+            </div>
+            <div class="chart" class="bottomcharts" id="top-expenses-categories">
+                <!-- Placeholder for Bar Chart -->
+            </div>
+            <div class="chart" class="bottomcharts" id="expenses-by-day">
+                <!-- Placeholder for Bar Chart -->
+            </div>
         </div>
     </div>
-    
-    <div class="buttoncontainer">
-        <div class="buttons">
-            <a href="income_transaction.php">
-                <button class="dashboard-button">Income</button>
-            </a>
-            <a href="expenses_transaction.php">
-                <button class="dashboard-button">Expenses</button>
-            </a>
-            <a href="spend_mimit.php">
-                <button class="dashboard-button">Budget</button>
-            </a><a href="backup.php">
-                <button class="dashboard-button">Backup</button>
-            </a>
-        </div>
-    </div>
-
-    <div class="charts">
-        <div class="chart" id="expenses-by-group">
-            <!-- Placeholder for Pie Chart -->
-        </div>
-        <div class="chart" class="bottomcharts" id="top-expenses-categories">
-            <!-- Placeholder for Bar Chart -->
-        </div>
-        <div class="chart" id="expenses-by-week">
-            <!-- Placeholder for Line Chart -->
-        </div>
-        <div class="chart" class="bottomcharts" id="expenses-by-day">
-            <!-- Placeholder for Bar Chart -->
-        </div>
-    </div>
-</div>
 
 </body>
 
