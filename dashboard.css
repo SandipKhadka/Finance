@@ -1,6 +1,6 @@
 body {
 	background-color: #f5f5f5;
-	color: #e6e6e6;
+	color: black;
 	font-family: Arial, sans-serif;
 	margin: 0;
 	padding: 20px;
@@ -203,11 +203,12 @@ button {
 	padding: 12px;
 	border: 1px solid #555555;
 	text-align: left;
+	color: black;
 }
 
 .budget-table th {
 	background-color: #f3675d;
-	color: black;
+	color: white;
 }
 
 .budget-table tr:nth-child(even) {
