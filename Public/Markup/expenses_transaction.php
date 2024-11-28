@@ -178,6 +178,55 @@ $expenses_controller->close_db_connection();
 </head>
 
 <body>
+    <div class="header-bar">
+        <h1><a href="dashboard.php"> BudgetBuddy </a></h1>
+
+        <div class="buttoncontainer">
+            <div class="buttons">
+                <a href="income_transaction.php">
+                    <button class="dashboard-button">Income</button>
+                </a>
+                <a href="expenses_transaction.php">
+                    <button class="dashboard-button">Expenses</button>
+                </a>
+                <a href="spend_mimit.php">
+                    <button class="dashboard-button">Budget</button>
+                </a><a href="backup.php">
+                    <button class="dashboard-button">Backup</button>
+                </a>
+            </div>
+        </div>
+
+        <div class="profile-container">
+            <div onclick="toggleDropdown()" class="profile-icon"> &#9679;
+                <img src="../icons/user-icon.png" alt="User Profile" class="profile-img">
+            </div>
+            <div id="profile-dropdown" class="dropdown-content">
+                <a href="../../App/Controller/UserController.php?submit=logout"> <img src="../icons/logout.png" class="icons"> Logout</a>
+                <a href="change_password.php"> <img src="../icons/lock.png" class="icons"> Change Password</a>
+            </div>
+        </div>
+
+        <script>
+            function toggleDropdown() {
+                document.getElementById('profile-dropdown').classList.toggle('show');
+            }
+
+            window.onclick = function(event) {
+                if (!event.target.matches('.profile-icon')) {
+                    var dropdown = document.getElementsByClassName('dropdown-content');
+                    var i;
+                    for (i = 0; i < dropdown.length; i++) {
+                        var openDropdown = dropdown[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+            };
+        </script>
+    </div>
+
     <div class="container">
         <a href="dashboard.php">
             <button>&#x2190; Dashboard</button>

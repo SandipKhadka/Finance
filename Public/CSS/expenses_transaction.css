@@ -25,6 +25,12 @@ h1 {
 	margin-bottom: 20px;
 }
 
+.icons {
+	height: 25px;
+	width: 25px;
+	margin: 5px;
+}
+
 .add-button {
 	position: relative;
 }

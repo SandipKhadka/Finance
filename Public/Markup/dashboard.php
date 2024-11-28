@@ -176,7 +176,7 @@ $dashboard_controller->close_db_connection();
 
 <body>
     <div class="header-bar">
-        <h1>BudgetBuddy</h1>
+        <h1><a href="dashboard.php"> BudgetBuddy </a></h1>
 
         <div class="buttoncontainer">
             <div class="buttons">
@@ -199,8 +199,8 @@ $dashboard_controller->close_db_connection();
                 <img src="../icons/user-icon.png" alt="User Profile" class="profile-img">
             </div>
             <div id="profile-dropdown" class="dropdown-content">
-                <a href="../../App/Controller/UserController.php?submit=logout">Logout</a>
-                <a href="change_password.php">Change Password</a>
+                <a href="../../App/Controller/UserController.php?submit=logout"> <img src="../icons/logout.png" class="icons"> Logout</a>
+                <a href="change_password.php"> <img src="../icons/lock.png" class="icons"> Change Password</a>
             </div>
         </div>
 

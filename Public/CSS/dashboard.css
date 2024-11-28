@@ -17,6 +17,12 @@ h2 {
 	text-align: center;
 }
 
+.icons {
+	height: 25px;
+	width: 25px;
+	margin: 5px;
+}
+
 .header-bar {
 	display: flex;
 	justify-content: space-between;
@@ -131,7 +137,7 @@ button {
 }
 
 .summary-value {
-	font-size: 1.5em;
+	font-size: 2.5em;
 	color: #2273dd;
 }
 

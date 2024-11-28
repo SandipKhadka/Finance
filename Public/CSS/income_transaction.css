@@ -19,6 +19,7 @@ h1,
 h2 {
 	color: #2273dd;
 	text-align: center;
+	text-decoration: none !important;
 }
 
 .header-bar {
@@ -28,6 +29,12 @@ h2 {
 	background-color: #f1eeee;
 	padding: 10px 20px;
 	margin-bottom: 20px;
+}
+
+.icons {
+	height: 25px;
+	width: 25px;
+	margin: 5px;
 }
 
 .buttoncontainer {
