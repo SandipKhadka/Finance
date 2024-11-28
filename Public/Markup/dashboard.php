@@ -195,7 +195,7 @@ $dashboard_controller->close_db_connection();
         </div>
 
         <div class="profile-container">
-            <div onclick="toggleDropdown()" class="profile-icon"> &#9679;
+            <div onclick="toggleDropdown()" class="profile-icon" role="button">
                 <img src="../icons/user-icon.png" alt="User Profile" class="profile-img">
             </div>
             <div id="profile-dropdown" class="dropdown-content">
@@ -206,21 +206,20 @@ $dashboard_controller->close_db_connection();
 
         <script>
             function toggleDropdown() {
-                document.getElementById('profile-dropdown').classList.toggle('show');
+                const dropdown = document.getElementById('profile-dropdown');
+                if (dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                } else {
+                    dropdown.style.display = 'block';
+                }
             }
 
             window.onclick = function(event) {
-                if (!event.target.matches('.profile-icon')) {
-                    var dropdown = document.getElementsByClassName('dropdown-content');
-                    var i;
-                    for (i = 0; i < dropdown.length; i++) {
-                        var openDropdown = dropdown[i];
-                        if (openDropdown.classList.contains('show')) {
-                            openDropdown.classList.remove('show');
-                        }
-                    }
+                const dropdown = document.getElementById('profile-dropdown');
+                if (!event.target.closest('.profile-container')) {
+                    dropdown.style.display = 'none';
                 }
-            };
+            }
         </script>
     </div>
 

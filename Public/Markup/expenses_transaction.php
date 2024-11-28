@@ -209,21 +209,20 @@ $expenses_controller->close_db_connection();
 
         <script>
             function toggleDropdown() {
-                document.getElementById('profile-dropdown').classList.toggle('show');
+                const dropdown = document.getElementById('profile-dropdown');
+                if (dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                } else {
+                    dropdown.style.display = 'block';
+                }
             }
 
             window.onclick = function(event) {
-                if (!event.target.matches('.profile-icon')) {
-                    var dropdown = document.getElementsByClassName('dropdown-content');
-                    var i;
-                    for (i = 0; i < dropdown.length; i++) {
-                        var openDropdown = dropdown[i];
-                        if (openDropdown.classList.contains('show')) {
-                            openDropdown.classList.remove('show');
-                        }
-                    }
+                const dropdown = document.getElementById('profile-dropdown');
+                if (!event.target.closest('.profile-container')) {
+                    dropdown.style.display = 'none';
                 }
-            };
+            }
         </script>
     </div>
 
