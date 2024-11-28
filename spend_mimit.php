@@ -16,17 +16,62 @@ $spend_limit_controller->close_db_connection();
 </head>
 
 <body>
-<div class="limit-container">
-    <a href="dashboard.php">
-        <button>&#x2190; Dashboard</button>
-    </a>
-    <h1>Set Spending Limits</h1>
-    <table class="transactions-table">
+<div class="header-bar">
+        <h1><a href="dashboard.php"> BudgetBuddy </a></h1>
+
+        <div class="buttoncontainer">
+            <div class="buttons">
+                <a href="income_transaction.php">
+                    <button class="dashboard-button">Income</button>
+                </a>
+                <a href="expenses_transaction.php">
+                    <button class="dashboard-button">Expenses</button>
+                </a>
+                <a href="spend_mimit.php">
+                    <button class="dashboard-button">Budget</button>
+                </a><a href="backup.php">
+                    <button class="dashboard-button">Backup</button>
+                </a>
+            </div>
+        </div>
+
+        <div class="profile-container">
+            <div onclick="toggleDropdown()" class="profile-icon"> &#9679;
+                <img src="../icons/user-icon.png" alt="User Profile" class="profile-img">
+            </div>
+            <div id="profile-dropdown" class="dropdown-content">
+                <a href="../../App/Controller/UserController.php?submit=logout"> <img src="../icons/logout.png" class="icons"> Logout</a>
+                <a href="change_password.php"> <img src="../icons/lock.png" class="icons"> Change Password</a>
+            </div>
+        </div>
+
+        <script>
+            function toggleDropdown() {
+                const dropdown = document.getElementById('profile-dropdown');
+                if (dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                } else {
+                    dropdown.style.display = 'block';
+                }
+            }
+
+            window.onclick = function(event) {
+                const dropdown = document.getElementById('profile-dropdown');
+                if (!event.target.closest('.profile-container')) {
+                    dropdown.style.display = 'none';
+                }
+            }
+        </script>
+    </div>
+<div class="main-container">
+<div class="budget-container">
+    <h1>Set Spending Limit</h1>
+    <table class="budget-table">
         <tr>
             <th>Limit</th>
             <th>Category</th>
-            <th>Current Spend</th>
-            <th>Left Spend</th>
+            <th>Spent Amount</th>
+            <th>Left Amount</th>
         </tr>
         <?php
         foreach ($spend_limit_data as $spend_limit) {
@@ -45,7 +90,6 @@ $spend_limit_controller->close_db_connection();
                 type="text"
                 name="amount"
                 placeholder="Enter the spending limit"
-                style="color: black"
                 required
         />
         <select name="category-id" id="category-id" required>
@@ -61,6 +105,7 @@ $spend_limit_controller->close_db_connection();
             Add spending limit
         </button>
     </form>
+</div>
 </div>
 </body>
 </html>
