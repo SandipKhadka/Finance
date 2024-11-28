@@ -29,6 +29,44 @@ class UserController
         }
     }
 
+    public function logout_user()
+    {
+        setcookie("userName", "", time() - 3600, "/");
+        session_unset();
+        session_destroy();
+        header('location: /finance');
+    }
+
+    public function change_password()
+    {
+        $user_name = $_SESSION['userName'];
+        $previous_password = htmlspecialchars($_POST['previousPassword']);
+        $new_password = htmlspecialchars($_POST['newPassword']);
+        $confirm_password = htmlspecialchars($_POST['confirmPassword']);
+
+        $hashed_password = hash('sha256', $previous_password);
+
+        $userDB = new UserDB();
+
+        if (!$userDB->login_user($user_name, $hashed_password)) {
+            $_SESSION['entered-previous-password'] = $previous_password;
+            $_SESSION['incorrect-password'] = "The password is incorrect";
+            header("location: ../../Public/Markup/change_password.php");
+            exit();
+        }
+        if ($new_password != $confirm_password) {
+            $_SESSION['entered-new-password'] = $new_password;
+            $_SESSION['entered-confirm-password'] = $confirm_password;
+            $_SESSION['no-match-error'] = "Passwords do not match";
+            header("location: ../../Public/Markup/change_password.php");
+            exit();
+        }
+        $hashed_password  = hash('sha256', $new_password);
+        $userDB = new UserDB();
+        $userDB->change_password($user_name, $hashed_password);
+        header("location: ../../Public/Markup/dashboard.php");
+  }
+
     public function login_user()
     {
         $user_name = htmlspecialchars($_POST['userName']);
@@ -53,13 +91,6 @@ class UserController
         header("Location: ../../index.php");
     }
 
-    public function logout_user()
-    {
-        setcookie("userName", "", time() - 3600, "/");
-        session_unset();
-        session_destroy();
-        header('location: /finance');
-    }
 }
 
 if (isset($_COOKIE['userName'])) {
@@ -73,12 +104,6 @@ if (isset($_SESSION['userName']) && isset($_GET['submit']) && $_GET['submit'] ==
     exit();
 }
 
-if (isset($_SESSION['userName'])) {
-    header('Location: /finance/Public/Markup/dashboard.php');
-    die;
-}
-
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
     $user->login_user();
 }
@@ -88,3 +113,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     $user->register_user();
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit']) && $_POST['submit'] == "changePassword") {
+    $user->change_password();
+    exit();
+}
+
+if (isset($_SESSION['userName'])) {
+    header('Location: /finance/Public/Markup/dashboard.php');
+    die;
+}

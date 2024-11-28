@@ -11,10 +11,6 @@ class UserDB
         $this->connection = DBConnection::get_connection();  // Open the connection once
     }
 
-    public function __destruct()
-    {
-        DBConnection::close_connection(); // Close the connection when the object is destroyed
-    }
 
     public function register_user($first_name, $last_name, $user_name, $hashed_password)
     {
@@ -80,5 +76,32 @@ class UserDB
         }
 
         return $correctness;
+    }
+
+    public function change_password($user_name, $hashed_password)
+    {
+        $user_id = $this->get_user_id($user_name);
+        $sql = "UPDATE user_details SET password = ? WHERE user_id = ?";
+        $statement = mysqli_stmt_init($this->connection);
+        if (mysqli_stmt_prepare($statement, $sql)) {
+            mysqli_stmt_bind_param($statement, "si", $hashed_password, $user_id,);
+            mysqli_stmt_execute($statement);
+        }
+    }
+
+    public function get_user_id($user_name)
+    {
+        $user_id = null;
+        $sql = "SELECT user_id FROM user_details WHERE user_name = ?";
+        $statement = mysqli_stmt_init($this->connection);
+        if (mysqli_stmt_prepare($statement, $sql)) {
+            mysqli_stmt_bind_param($statement, "s", $user_name);
+            mysqli_stmt_execute($statement);
+            mysqli_stmt_bind_result($statement, $user_id);
+            if (mysqli_stmt_fetch($statement)) {
+                return $user_id;
+            }
+        }
+        return null;
     }
 }

@@ -4,11 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/xampp/htdocs/finance/App/Controller/UserController.php</file>
-            <file>file:/C:/xampp/htdocs/finance/App/Config/DBConnection.php</file>
+            <file>file:/C:/xampp/htdocs/finance/App/Database/IncomeDB.php</file>
+            <file>file:/C:/xampp/htdocs/finance/App/Database/SpendingLimitDB.php</file>
             <file>file:/C:/xampp/htdocs/finance/App/Controller/IncomeController.php</file>
             <file>file:/C:/xampp/htdocs/finance/sqlcommands.sql</file>
             <file>file:/C:/xampp/htdocs/finance/Public/Markup/spend_mimit.php</file>
-            <file>file:/C:/xampp/htdocs/finance/Public/Markup/backup.php</file>
         </group>
     </open-files>
 </project-private>

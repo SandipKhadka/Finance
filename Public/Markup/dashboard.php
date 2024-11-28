@@ -165,6 +165,9 @@ $dashboard_controller->close_db_connection();
     <button>
         <a href="../../App/Controller/UserController.php?submit=logout" id="logout">Log out</a>
     </button>
+    <button>
+    <a href="change_password.php">Change Password</a>
+    </button>
     <h1>BudgetBuddy</h1>
 
     <div class="summary">
