@@ -1,6 +1,6 @@
 body {
 	background-color: #f5f5f5;
-	color: #e6e6e6;
+	color: black;
 	font-family: Arial, sans-serif;
 	margin: 0;
 	padding: 20px;
@@ -174,4 +174,97 @@ button {
 	position: relative;
 
 	margin-bottom: 20px;
+}
+ /*Spending limit*/
+ .main-container{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 70vh;
+ }
+ .budget-container {
+	border: 3px solid #333333;
+	background-color: #e6e6e6;
+	padding: 20px;
+	border-radius: 10px;
+	width: 100%;
+	max-width: 400px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.budget-table {
+	width: 100%;
+	margin-bottom: 20px;
+	border-collapse: collapse;
+}
+
+.budget-table th,
+.budget-table td {
+	padding: 12px;
+	border: 1px solid #555555;
+	text-align: left;
+	color: black;
+}
+
+.budget-table th {
+	background-color: #f3675d;
+	color: white;
+}
+
+.budget-table tr:nth-child(even) {
+	background-color: #b9abab;
+}
+
+.form-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.form-container label {
+	margin-top: 10px;
+}
+
+.form-container input[type="text"],
+.form-container select {
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #555555;
+	box-sizing: border-box;
+	background-color: #3c4b5e;
+	color: #e6e6e6;
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+	color: #ccc;
+}
+
+.form-container button {
+	background-color: #2273dd;
+	color: white;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	cursor: pointer;
+	width: 100%;
+	border-radius: 5px;
+}
+
+.form-container,
+button {
+	opacity: 0.9;
+}
+
+.form-container input[type="password"],
+.form-container select {
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #555555;
+	box-sizing: border-box;
+	background-color: #3c4b5e;
+	color: #e6e6e6;
 }
