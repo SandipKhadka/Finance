@@ -377,7 +377,7 @@ $incomeController->close_db_connection();
 
             </tr>
             <tr>
-                <td><?= $total_income ?></td>
+                <td>Total: <?= $total_income ?></td>
             </tr>
         </table>
 

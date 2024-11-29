@@ -381,7 +381,7 @@ $expenses_controller->close_db_connection();
                 </tr>
 
                 <tr>
-                    <td><?= $total_expenses ?></td>
+                    <td>Total: <?= $total_expenses ?></td>
                 </tr>
             </table>
 
