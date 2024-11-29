@@ -108,7 +108,6 @@ $dashboard_controller->close_db_connection();
             var options = {
                 chart: {
                     title: "Expenses By Day",
-                    subtitle: "in millions of dollars (USD)",
                 },
                 titleTextStyle: {
                     color: 'black',

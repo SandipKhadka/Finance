@@ -46,28 +46,45 @@ class SpendingLimitDB
 
     public function get_spending_limit($user_name)
     {
+        // Get user_id based on the username
         $user_id = $this->get_user_id($user_name);
-        $sql = "SELECT spending_limit.amount,expenses_category.category_name, SUM(expenses.expenses_amount)
-                FROM spending_limit 
-                    INNER JOIN expenses_category ON spending_limit.category_id = expenses_category.category_id
-                    INNER JOIN expenses ON spending_limit.category_id = expenses.expenses_category
-                    WHERE spending_limit.user_id = ? AND YEAR(spending_limit.date)= ? and MONTH(spending_limit.date)= ?";
+
+        // SQL Query with SUM and GROUP BY to aggregate expenses for each category
+        $sql = "SELECT spending_limit.amount, 
+                   expenses_category.category_name, 
+                   SUM(expenses.expenses_amount) AS total_expenses
+            FROM spending_limit
+            INNER JOIN expenses_category ON spending_limit.category_id = expenses_category.category_id
+            INNER JOIN expenses ON expenses_category.category_id = expenses.expenses_category
+            WHERE spending_limit.user_id = ? 
+              AND YEAR(spending_limit.date) = ? 
+              AND MONTH(spending_limit.date) = ?
+            GROUP BY spending_limit.amount, expenses_category.category_name";
 
         $date = date("Y-m");
         list($year, $month) = explode("-", $date);
+
         $statement = mysqli_stmt_init($this->connection);
         $data = [];
+
         if (mysqli_stmt_prepare($statement, $sql)) {
             mysqli_stmt_bind_param($statement, "iii", $user_id, $year, $month);
+
             mysqli_stmt_execute($statement);
+
             $result = mysqli_stmt_get_result($statement);
+
             while ($row = mysqli_fetch_assoc($result)) {
                 $data[] = $row;
             }
-            return $data;
+
+            // Return the fetched data or an empty array if no data found
+            return !empty($data) ? $data : null;
         }
+
         return null;
     }
+
 
     public function add_or_update_spend_limit($user_name, $amount, $category_id)
     {

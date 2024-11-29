@@ -39,49 +39,53 @@ unset($_SESSION['entered-confirm-password']);
                 document.getElementById('confirmPasswordError').innerHTML = 'Passwords do not match.';
                 isValid = false;
             }
-            if(!isValid) {
+            if (!isValid) {
                 event.preventDefault();
             }
         }
     </script>
 </head>
 <body>
-    <div class="main-container">
-        <div class="budget-container">
-            <h2>Set New Password</h2>
-<form action="../../App/Controller/UserController.php" method="post" onsubmit="validateForm(event)" class="form-container">
-    <div>
-        <input type="password" name="previousPassword" placeholder="Enter old password" value="<?=$previous_password?>" id="previous-pass">
-        <div id="previousPasswordError" class="error"></div>
-        <?php
-        if (isset($_SESSION['incorrect-password'])) {
-            echo "<div class='error'>" . $_SESSION['incorrect-password'] . "</div>";
-            unset($_SESSION['incorrect-password']);
-        }
-        ?>
-    </div>
+<div class="main-container">
+    <div class="budget-container">
+        <h2>Set New Password</h2>
+        <form action="../../App/Controller/UserController.php" method="post" onsubmit="validateForm(event)"
+              class="form-container">
+            <div>
+                <input type="password" name="previousPassword" placeholder="Enter old password"
+                       value="<?= $previous_password ?>" id="previous-pass">
+                <div id="previousPasswordError" class="error"></div>
+                <?php
+                if (isset($_SESSION['incorrect-password'])) {
+                    echo "<div class='error'>" . $_SESSION['incorrect-password'] . "</div>";
+                    unset($_SESSION['incorrect-password']);
+                }
+                ?>
+            </div>
 
-    <div>
-        <input type="password" name="newPassword" placeholder="New password" value="<?=$new_password?>" id="new-pass">
-        <div id="newPasswordError" class="error"></div>
-    </div>
+            <div>
+                <input type="password" name="newPassword" placeholder="New password" value="<?= $new_password ?>"
+                       id="new-pass">
+                <div id="newPasswordError" class="error"></div>
+            </div>
 
-    <div>
-        <input type="password" name="confirmPassword" placeholder="Confirm password" value="<?= $confirm_password?>" id="confirm-pass">
-        <div id="confirmPasswordError" class="error"></div>
-        <?php
-        if (isset($_SESSION['no-match-error'])) {
-            echo "<div class='error'>" . $_SESSION['no-match-error'] . "</div>";
-            unset($_SESSION['no-match-error']);
-        }
-        ?>
-    </div>
+            <div>
+                <input type="password" name="confirmPassword" placeholder="Confirm password"
+                       value="<?= $confirm_password ?>" id="confirm-pass">
+                <div id="confirmPasswordError" class="error"></div>
+                <?php
+                if (isset($_SESSION['no-match-error'])) {
+                    echo "<div class='error'>" . $_SESSION['no-match-error'] . "</div>";
+                    unset($_SESSION['no-match-error']);
+                }
+                ?>
+            </div>
 
-    <div>
-        <button type="submit" name="submit" value="changePassword">Change Password</button>
+            <div>
+                <button type="submit" name="submit" value="changePassword">Change Password</button>
+            </div>
+        </form>
     </div>
-</form>
-</div>
 </div>
 </body>
 </html>

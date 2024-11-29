@@ -102,7 +102,6 @@ class IncomeDB
         $data = [];
 
         $start_year_month = date('Y-m', strtotime($start_filter_date));
-        echo $start_year_month;
 
         if ($end_filter_date == null) {
             $end_year_month = $start_year_month;

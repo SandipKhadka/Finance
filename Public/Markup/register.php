@@ -17,9 +17,8 @@ unset($_SESSION['entered-username']);
     <title>Registration Form</title>
     <link rel="stylesheet" href="../CSS/register.css"/>
     <script>
-        // JavaScript Validation
         function validateForm(event) {
-            // Prevent form submission for client-side validation
+
 
             const firstName = document.getElementById('first-name');
             const lastName = document.getElementById('last-name');
@@ -28,35 +27,29 @@ unset($_SESSION['entered-username']);
 
             let valid = true;
 
-            // Clear previous error messages
             document.querySelectorAll('.error').forEach(error => error.textContent = '');
 
-            // First Name validation
             if (!/^[a-zA-Z]+$/.test(firstName.value)) {
                 showError(firstName, 'First name must only contain letters.');
                 valid = false;
             }
 
-            // Last Name validation
             if (!/^[a-zA-Z]+$/.test(lastName.value)) {
                 showError(lastName, 'Last name must only contain letters.');
                 valid = false;
             }
 
-            // Username validation
             if (username.value.length < 3) {
                 showError(username, 'Username must be at least 3 characters long.');
                 valid = false;
             }
 
-            // Password validation
             const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
             if (!passwordRegex.test(password.value)) {
                 showError(password, 'Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, and one number.');
                 valid = false;
             }
 
-            // Submit form if valid
             if(!valid) {
                 event.preventDefault();
             }

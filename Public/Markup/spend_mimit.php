@@ -78,8 +78,8 @@ $spend_limit_controller->close_db_connection();
             echo "<tr>";
             echo "<td>" . $spend_limit['amount'] . "</td>";
             echo "<td>" . $spend_limit['category_name'] . "</td>";
-            echo "<td>" . $spend_limit['SUM(expenses.expenses_amount)'] . "</td>";
-            $left_limit = $spend_limit['amount'] - $spend_limit['SUM(expenses.expenses_amount)'];
+            echo "<td>" . $spend_limit['total_expenses'] . "</td>";
+            $left_limit = $spend_limit['amount'] - $spend_limit['total_expenses'];
             echo "<td>" . $left_limit . "</td>";
             echo "</tr>";
         }

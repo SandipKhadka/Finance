@@ -95,10 +95,6 @@ class IncomeController
         $category_id = $_POST['categoryId'];
 
         $remarks = $_POST['remarks'];
-        print_r($amount);
-        print_r($category_id);
-        print_r($remarks);
-        print_r($income_id);
         $user_name = $_SESSION['userName']; // Access session variable
         $income = new IncomeDB();
         $income->update_income_transaction($user_name, $amount, $remarks, $category_id, $income_id);

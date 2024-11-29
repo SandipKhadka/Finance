@@ -342,12 +342,12 @@ $incomeController->close_db_connection();
                         "</td>";
 
                     echo "<td>" .
-                        "<label for='remarks" . $transaction['income_id'] . "' i"
-                        . "d='defaultRemarks" . $transaction['income_id'] . "'>"
+                        "<label for='remarks" . $transaction['income_id'] . "' "
+                        . "id='defaultRemarks" . $transaction['income_id'] . "'>"
                         . $transaction['remarks'] . "</label>" .
-                        "<input type='text' name='remarks'"
-                        . " id='remarks-" . $transaction['income_id'] . "'"
-                        . " value='class='entry'" . $transaction['remarks'] . "' hidden/>" .
+                        "<input type='text' name='remarks' "
+                        . "id='remarks-" . $transaction['income_id'] . "' "
+                        . "value='" . $transaction['remarks'] . "' hidden/>" .
                         "</td>";
 
                     echo '<td>' . $transaction['date'] . '</td>';
